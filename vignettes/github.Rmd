@@ -1,0 +1,95 @@
+---
+title: "Exploring GitHub Repositories"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Exploring GitHub Repositories}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(papercheck)
+```
+
+There are some built-in functions in papercheck for exploring GitHub repositories. You can use these in custom modules.
+
+## github_repo
+
+The github functions all work with the following formats for referring to repositories:
+
+* `"{username}/{repo}"`  
+* `"{username}/{repo}.git"`  
+* `"https://github.com/{username}/{repo}.git"`  
+* `"https://github.com/{username}/{repo}/{...}"`  
+
+The `github_repo()` function returns the simplified format of. repo name, and an error if the repository in inaccessible.
+
+```{r}
+github_repo("https://github.com/scienceverse/papercheck.git")
+```
+
+```{r, error = TRUE}
+github_repo("scienceverse/checkpaper")
+```
+
+
+## github_readme
+
+Get the text of the readme file, regardless of the exact file name (e.g., README vs README.md). 
+
+```{r}
+readme <- github_readme("scienceverse/papercheck")
+
+cat(readme)
+```
+
+
+
+## github_languages
+
+You can retrieve the number of bytes dedicated to various coding languages, as detected and classified by GitHub.
+
+```{r}
+github_languages("scienceverse/papercheck")
+```
+
+## github_files
+
+You can get a list of file names, their path, size, file extension, and a guess at their type. 
+
+By default, you just retrieve the files and directories in the base directory, non-recursively.
+
+```{r}
+github_files("scienceverse/papercheck")
+```
+
+```{r}
+github_files("scienceverse/papercheck", dir = ".github")
+```
+
+You can also retrieve files recursively. Searching a large repository recursively can take a few seconds. 
+
+```{r}
+github_files("scienceverse/papercheck",
+             dir = ".github",
+             recursive = TRUE)
+```
+
+## github_info
+
+Get all of the information about a repository in one list object, with items named "repo", "readme", "languages", and "files".
+
+```{r}
+info <- github_info("scienceverse/papercheck", 
+                    recursive = TRUE)
+
+info$files |> dplyr::count(type)
+```
+
