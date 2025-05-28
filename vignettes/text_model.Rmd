@@ -19,6 +19,9 @@ knitr::opts_chunk$set(
 
 library(papercheck)
 library(dplyr)
+library(ggplot2)
+
+theme_set(theme_minimal(base_size = 16))
 
 set.seed(8675309) 
 ```
@@ -31,9 +34,10 @@ You can build a simple general linear model to predict the classification of tex
 See the [metascience vignette](metascience.html) for an explanation of how to set up a ground truth table. Here, we're going to split our data into a training and test set.
 
 ```{r}
-ground_truth <- readxl::read_excel("power/power_screening_coded.xlsx")
+ground_truth <- readr::read_csv("power/power_screening_coded.csv", 
+                         show_col_types = FALSE)
 
-train <- dplyr::slice_sample(ground_truth, prop = 0.5)
+train <- slice_sample(ground_truth, prop = 0.5)
 test <- anti_join(ground_truth, train, by = "text")
 ```
 
@@ -94,7 +98,7 @@ has_symbols <- c(has_equals = "=",
 
 features <- text_features(
   text = train$text, 
-  words = words,
+  words = words$word,
   word_count = FALSE, 
   has_number = TRUE,
   has_symbol = has_symbols, 
@@ -127,9 +131,37 @@ Now you can classify any text using this model. First, we're going to predict th
 
 ```{r}
 train$model_response <- predict(model, features)
+```
 
-train$power_computation_predict <-
-  train$model_response > 0.5
+
+```{r}
+#| echo: false
+ggplot(train, aes(x = model_response, 
+                  color = factor(power_computation, 0:1, c("No", "Yes")))) +
+  geom_vline(xintercept = 0, color = "grey40") +
+  geom_hline(yintercept = 0, color = "grey40") +
+  geom_density(linewidth = 1.5) +
+  scale_color_manual(values = c("dodgerblue", "firebrick")) +
+  scale_x_continuous(breaks = -100:100) +
+  guides(
+    colour = guide_legend(position = "inside")
+  ) +
+  labs(x = "Model Response",
+       y = NULL,
+       color = "Power Computation") +
+  theme(legend.position.inside = c(.8, .8), 
+        axis.text.y = element_blank(),
+        legend.background = element_blank()
+        )
+```
+
+You can see that it's just below 0 that Yes values become more probable than No values. Remeber, this will change a bite depending on your sample, so you don't need to optimize the threshold to two decimal places or anything.
+
+>[!NOTE]
+> You need to consider the use of your classification when setting a threshold. Do you want to be over-inclusive and have another step to weed out false positives? Or under-inclusive and be absolutely sure that you only classify a sentence as having a power analysis when it defiitely does? Or do you want to balance these two types of error?
+
+```{r}
+train$power_computation_predict <- train$model_response > 0
 
 dplyr::count(train, 
              power_computation, 
@@ -139,7 +171,6 @@ dplyr::count(train,
 Now you should test this on a new set of data.
 
 ```{r}
-
 test_features <- text_features(
   text = test$text, 
   words = words,
@@ -150,8 +181,7 @@ test_features <- text_features(
 )
 test$model_response <- predict(model, test_features)
 
-test$power_computation_predict <-
-  test$model_response > 0.5
+test$power_computation_predict <- test$model_response > 0
 
 dplyr::count(test, 
              power_computation, 
@@ -159,9 +189,7 @@ dplyr::count(test,
 ```
 
 
-<!--
-
-### Create a module
+## Create a module
 
 To create a module for this, you will need to save your model and create a module with code.
 
@@ -170,59 +198,63 @@ saveRDS(model, "power/power_log_model.Rds")
 ```
 
 
-```
-{
-  "title": "Classify with Log Model",
-  "description": "",
-  "code": {
-    "packages": ["papercheck"],
-    "code": "power_log_model.R"
-  }
+```{r, eval=FALSE}
+#' Power Log Model
+power_log_model <- function(paper) {
+  # initial text search
+  table <- paper |>
+    papercheck::search_text("power(ed)?\\b") |>
+    papercheck::search_text("(\\.[0-9]|[0-9]%)")
+
+  # get text features
+  words <- c("size", "sampl", "effect", "particip", "α", "analysi", "80", 
+"in", "detect", "we")
+
+  has_symbols <- c(has_equals = "=",
+                   has_percent = "%")
+
+  features <- text_features(
+    text = table$text,
+    words = words,
+    word_count = FALSE,
+    has_number = TRUE,
+    has_symbol = has_symbols,
+    values = "presence" # presence or count
+  )
+
+  # predict response from model
+  model <- readRDS("power_log_model.Rds")
+  table$model_response <- predict(model, features)
+  table$power_computation_predict <- table$model_response > 0
+
+  # summarise by paper
+  summary_table <- table[table$power_computation_predict, ] |>
+    dplyr::count(id, name = "n_power")
+
+  list(
+    table = table,
+    summary = summary_table,
+    na_replace = 0
+  )
 }
 ```
 
+Now you can use `module_run()` to run the module on a new paper or set of papers.
 
-```{r, eval = FALSE}
-
-words <- c("size", "effect", "sample", 
-           "participants", "detect", "analysis",
-           "medium", "power", "faul", "respondents", 
-           "α", "cohen's", "research", 
-           "version", "experiment")
-
-has_symbols <- c(has_equals = "=", 
-                 has_percent = "%")
-
-readRDS("power/power_log_model.Rds")
-
-table <- paper |>
-  papercheck::search_text("power(ed)?\\b") |>
-  papercheck::search_text("(\\.[0-9]|[0-9]%)")
-
-features <- papercheck::text_features(
-  table$text, words, has_symbols = has_symbols
-)
-
-table$model_response <- predict(model, features)
-table$model_classification <- table$model_response > 0.5
-
-traffic_light <- "red"
-if (any(table$model_classification)) traffic_light <- "green"
-
-# return
-list(
-  table = table,
-  traffic_light = traffic_light
-)
-
+```{r}
+m <- demodir() |> read_grobid() |>
+  module_run("power/power_log_model.R")
 ```
 
-```{r, eval = FALSE}
-v4 <- module_run(psychsci, "power/power_log_model.mod")
+```{r}
+m$table[, c("id", "model_response", "power_computation_predict", "text")]
+```
+
+```{r}
+m$summary
 ```
 
 
--->
 
 
 

@@ -1,0 +1,147 @@
+---
+title: "Validation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+mytable <- function(tbl) {
+  DT::datatable(tbl, 
+                rownames = FALSE,
+                filter = "none",
+                options = list(pageLength = 5, dom = "tip")
+  )
+}
+```
+
+```{r}
+#| label: setup
+#| message: false
+library(papercheck)
+library(dplyr)
+```
+
+This is a demo of the workflow for module validation. We are still piloting this workflow and it is likely to change.
+
+## Validation sample
+
+Create a paper list object for the papers in your validation sample. Here, we'll just use the first 10 papers in the `psychsci` set, but in practice you will need many more papers. 
+
+```{r}
+sample_papers <- psychsci[1:10]
+```
+
+## Expected Results
+
+Create objects for the expected results of the module you're validating. You can test any or all of the typically returned `table` or `summary` tables, as well as any other custom results.
+
+This usually requires quite a lot of manual work to determine the ground truth for each paper in your validation sample. 
+
+### Results Table
+
+For returned tables, the columns should have the same names as the columns returned by the module. You can omit any columns (except `id`) and they will not be checked in the validation. Here, we will validate only the text column.
+
+```{r}
+#| echo: false
+exp_table <- data.frame(
+  id = rep("0956797615569889", 4),
+  text = c("Although the PTSD group showed a significant facilitation effect (M = 0.68), F(1, 15) = 5.575, p = .032, η p 2 = .271, and the control group showed only a marginally significant effect (M = 0.56), F(1, 15) = 4.368, p = .054, η p 2 = .226, the difference between the groups was not significant, F(1, 30) = 0.100, p = .754, η p 2 = .003 (Fig. 3c).", 
+           "A marginally significant negative correlation was found between suppression-induced forgetting on the details measure and PDS scores in the PTSD group (Kendall's τ = -.33, p = .07; Fig. 4b).", 
+           "When we more closely matched depression symptoms by comparing the low-BDI-II PTSD group with the high-BDI-II control group, we observed a marginally significant group-by-condition interaction for the details measure, F(1, 16) = 4.032, p = .062, η p 2 = .201.", 
+           "In that analysis, the group difference in suppression-induced forgetting only approached significance, F(1, 30) = 3.869, p = .058, η p 2 = .114."
+  )
+)
+
+mytable(exp_table)
+```
+
+>[!NOTE]
+> You can use `search_text(sample_papers)` to get a list of all sentences in the sample, or narrow it down to sentences that match a search term. This can give you a starting table that you can code more easily for expected results. 
+
+### Summary Table
+
+We can also check the summary table. This is likely to be more useful for reporting validation statistics, as you can report for what percent of papers each column matches the expected value. 
+
+```{r}
+#| echo: false
+exp_summary <- data.frame(
+  id = names(sample_papers),
+  marginal = 0
+)
+exp_summary[which(exp_summary$id == "0956797615569889"), "marginal"] <- 4
+
+mytable(exp_summary)
+```
+
+## Run Validation
+
+The `validate()` function takes the paper list as a first argument, the module name or path as the second argument, and then the expected values of any expected results. These arguments must be named and have the same names as the results returned from the module, such as `table`, `summary`, or `traffic_light`. 
+
+```{r}
+v <- validate(sample_papers, 
+              module = "marginal", 
+              table = exp_table, 
+              summary = exp_summary)
+```
+
+If you print the result, it will give you a text summary of the validation.
+
+```{r}
+v
+```
+
+### Results List
+
+The result is actually a list with the module name, the actual results of the module for each expected return object, a list of match information for each expected return object, and stats for this match information. 
+
+```{r}
+sapply(v, names) |> str()
+```
+
+### Non-Summary Tables
+
+For tables where there are zero or more rows possible per id, the `matches` table gives you `expected`, `actual`, and `match` columns.
+
+```{r, eval = FALSE}
+v$matches$table
+```
+
+```{r, echo = FALSE}
+mytable(v$matches$table)
+```
+
+
+The stats for such tables gives you the number of true positives, false positives, and false negatives. This is for all columns, not column-by-column, since there may be multiple rows per paper id. 
+
+```{r}
+v$stats$table
+```
+
+>[!NOTE]
+> The stats section does not report true negatives because the total sample N can differ from module to module. For example, a module that identifies any sentences that describe an effect as 'marginally significant' has a total sample N of all the sentences in all the papers. Alternatively, a module that identifies whether each paper reports at least one power analysis has a total sample N of the number of papers.
+
+### Summary Tables
+
+For summary tables, where there is one row per paper id, the matches table is a little different. For each non-id column, it returned the expected and actual values, plus a column stating whether these match. 
+
+```{r, eval=FALSE}
+v$matches$summary
+```
+
+```{r, echo = FALSE}
+mytable(v$matches$summary)
+```
+
+The stats gives you the percent of matches for each column.
+
+```{r}
+v$stats$summary
+```
