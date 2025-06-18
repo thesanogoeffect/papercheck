@@ -1,7 +1,11 @@
 ---
 title: "OSF Functions"
 output: rmarkdown::html_vignette
-bibliography: references.bib
+bibliography: refs_osf.bib
+vignette: >
+  %\VignetteIndexEntry{OSF Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r load functions}
@@ -37,23 +41,23 @@ Ideally peer reviewers or editors would check the contents of a data repository.
 
 ## Checking an OSF repository with Papercheck
 
-We will illustrate the process of checking a data repository by focusing on projects on the [Open Science Framework](www.osf.io). For this illustration we use an open access paper published in Psychological Science that has already been converted to a papercheck object using GROBID. There are 250 open access papers in the Papercheck object `psychsci`.
+We will illustrate the process of checking a data repository by focusing on projects on the [Open Science Framework](www.osf.io). For this illustration we use an open access paper published in Psychological Science that has already been converted to a papercheck object using GROBID. There are 250 open access papers in the Papercheck object `psychsci`; we will choose one for this example.
 
 ```{r}
 # paper to use in this example
-paper <- psychsci$`09567976241279291`
+paper <- psychsci[[250]]
 ```
 
 
 ### Set up OSF functions
 
-You can only make 100 API requests per hour, unless you authorise your requests, when you can make 10K requests per day. The OSF functions in papercheck often make several requests per URL to get all of the info, so it's worthwhile setting your PAT. You can authorise them by creating an OSF token at <https://osf.io/settings/tokens> and including the following line in your .Renviron file:
+You can only make 100 API requests per hour, unless you authorise your requests, when you can make 10K requests per day. The OSF functions in papercheck often make several requests per URL to get all of the info, so it's worthwhile setting your PAT. You can authorise them by creating an OSF token at <https://osf.io/settings/tokens> and including the following line in your .Renviron file (which you can open using `usethis::edit_r_environ()`):
 
 ```
 OSF_PAT="replace-with-your-token-string"
 ```
 
-The OSF API server is down a lot, so it's often good to check it before you run a bunch of OSF functions. When the server is down, it can take several seconds to return an error, so scripts where you are checking many URLs can take a long time before you realise they aren't working.
+The OSF API server is down a lot, so it's often good to check it before you run a bunch of OSF functions, we provide the function `osf_api_check()` for this. When the server is down, it can take several seconds to return an error, so scripts where you are checking many URLs can take a long time before you realise they aren't working.
 
 ```{r}
 osf_api_check()
@@ -62,18 +66,17 @@ osf_api_check()
 
 ### Find OSF Links
 
-We start by searching for all URLs by using "all_urls" module, then narrowing that down to just the probable links to the Open Science Framework (OSF).
+We start by searching for OSF URLs using the `search_text()` function. 
+OSF links can be tricky to find in PDFs, since they can insert spaces in odd places, and view-only links that contain a ? are often interpreted as being split across sentences. This function is our best attempt at catching and fixing them all.
 
 ```{r search_osf}
-mod <- module_run(paper, "all_urls")
-osf_links <- mod$table |>
-  filter(grepl("osf\\s*\\.\\s*io", text, ignore.case = TRUE))
+links <- osf_links(paper)
 ```
 
 ```{r}
 #| echo: false
 
-osf_links |>
+links |>
   select(text, section) |>
   mytable()
 ```
@@ -82,48 +85,43 @@ osf_links |>
 
 If found, the link is processed, and the OSF Application Programming Interface (API) is used to retrieve whether the link points to a file, project, or registration, and what the overarching project is, in case this is not the folder linked to. This is achieved through the `osf_retrieve()` function.
 
-This function can take a vector of OSF IDs or URLs, or a table that contains them. If the IDs aren't in the first column, you will need to specify the name of the column. The function will return your table with added information.
+This function can take a vector of OSF IDs or URLs, or a table that contains them. If the IDs aren't in the first column, you will need to specify the name of the column. The function will return your table with added information. (You can quiet the output messages with `verbose(FALSE)`.)
+
+The function `osf_retrieve()` will also retrieve all child components, files and folders if you set the argument `recursive = TRUE`. We can retrieve all of the contents under the parent project(s) with the following code. If there are duplicate IDs, it will only get the contents for each item once. 
 
 ```{r enrich_links}
-link_info <- osf_retrieve(osf_links)
+info <- osf_retrieve(links, recursive = TRUE)
 ```
 
 
 ```{r}
 #| echo: false
-link_info |>
+info |>
+  filter(!is.na(text)) |>
   select(osf_id, name, osf_type, project) |>
   mytable()
 ```
 
 
-There are multiple OSF links in this paper, but they are all part of the same overarching OSF project, with the project ID *`r link_info$project[[1]]`*. 
+There are multiple OSF links in this paper, but they are all part of the same overarching OSF project, with the project ID *`r info$project[[1]]`*. 
 
-### Get all Project Contents
 
-The function `osf_retrieve()` will also retrieve all child components, files and folders if you set the argument `recursive = TRUE`. We can retrieve all of the contents under the parent project(s) with the following code.
+### Summarize Contents
 
-If you give this function a list with duplicate projects or missing values, it will only get the contents for each project once. 
-
-```{r get_osf_files}
-osf_files <- osf_retrieve(link_info$project, recursive = TRUE)
-```
-
-We can take a look at these results. The OSF allows you to categorize components by category, and we can also determine file types using extensions. It looks like these authors did not use any categories beyond the default project one. 
+The OSF allows you to categorize components by category, and we can also determine file types using extensions. 
 
 ```{r}
 #| echo: false
-osf_files |>
-  select(osf_id, name, osf_type, kind, filetype) |>
+info |>
+  filter(kind == "file") |>
+  select(osf_id, name, filetype) |>
   mytable()
 ```
-
-### Summarize Contents
 
 We can then use this information to determine if, for each file, the information about the files contains text that makes it easy to determine what is being shared. A simple regular expression text search for 'ReadMe', 'codebook', 'script', and 'data' (in a number of possible ways that these words can be written) is used to automatically detect what is shared.
 
 ```{r summarize_osf_files}
-osf_files_summary <- summarize_contents(osf_files)
+osf_files_summary <- summarize_contents(info)
 ```
 
 
@@ -182,14 +180,20 @@ osf_report <- function(summary) {
     sep = "\n\n"
   )
 
-  return(report_message)
+  return(list(
+    traffic_light = traffic_light,
+    report = report_message
+  ))
 }
 ```
 
 
 ```{r}
 #| results: 'asis'
-osf_report(osf_files_summary) |>cat()
+report <- osf_report(osf_files_summary) 
+
+# print the report inoto a file
+module_report(report) |> cat()
 ```
 
 ### Checking the Contents of files
@@ -208,13 +212,13 @@ As most scientists have not been taught how to code explicitly, it is common to 
 check_r_files <- function(summary) {
   r_files <- summary |>
     dplyr::filter(osf_type == "files",
-                  grepl("\\.R(md)?", name)) |>
+                  grepl("\\.R(md)?", name, ignore.case = TRUE)) |>
     dplyr::mutate(abs_report = NA, 
                   pkg_report = NA,
                   session_report = NA)
   
   report <- lapply(r_files$osf_id, \(id) {
-    report <- dplyr::filter(r_files, osf_id == id)
+    report <- dplyr::filter(r_files, osf_id == !!id)
     # Try downloading the R file
     file_url <- paste0("https://osf.io/download/", id)
     r_code <- tryCatch(
@@ -281,23 +285,21 @@ r_file_results |>
 
 Let's put everything together in one block of code, and perform all automated checks for another open access paper in Psychological Science.
 
-```{r second_paper}
+```{r together}
 # Add this and the custom functions to a file called osf_file_check.R
 
 osf_file_check <- function(paper) {
-  mod <- module_run(paper, "all_urls")
-  osf_links <- mod$table |>
-    filter(grepl("osf\\s*\\.\\s*io", text, ignore.case = TRUE))
-  
-  link_info <- osf_retrieve(osf_links)
-  osf_files <- osf_retrieve(link_info$project, recursive = TRUE)
-  osf_files_summary <- summarize_contents(osf_files)
-  report_message <- osf_report(osf_files_summary)
+  links <- osf_links(paper)
+  info <- osf_retrieve(links, recursive = TRUE)
+  osf_files_summary <- summarize_contents(info)
+  report <- osf_report(osf_files_summary)
   r_file_results <- check_r_files(osf_files_summary)  
   
   list(
+    traffic_light = report$traffic_light,
     table = r_file_results,
-    report = report_message
+    report = report$report,
+    summary = osf_files_summary
   )
 }
 ```
@@ -311,7 +313,6 @@ module_results <- module_run(psychsci$`0956797620955209`, "osf_file_check.R")
 
 module_report(module_results, header = 4) |> cat()
 ```
-
 
 
 ## Future Developments

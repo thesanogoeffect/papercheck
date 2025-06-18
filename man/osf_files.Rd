@@ -15,3 +15,4 @@ a data frame with file info
 \description{
 List Files in an OSF Component
 }
+\keyword{internal}

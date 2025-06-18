@@ -5,12 +5,13 @@ articles:
   batch: batch.html
   creating_modules: creating_modules.html
   github: github.html
+  articles/intro: intro.html
   modules: modules.html
   articles/osf: osf.html
   papercheck: papercheck.html
   report-example: report-example.html
   validate: validate.html
-last_built: 2025-06-12T22:51Z
+last_built: 2025-06-18T19:18Z
 urls:
   reference: https://scienceverse.github.io/papercheck/reference
   article: https://scienceverse.github.io/papercheck/articles

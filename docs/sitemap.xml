@@ -6,6 +6,7 @@
 <url><loc>https://scienceverse.github.io/papercheck/articles/creating_modules.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/articles/github.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/articles/index.html</loc></url>
+<url><loc>https://scienceverse.github.io/papercheck/articles/intro.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/articles/metascience.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/articles/modules.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/articles/osf.html</loc></url>
@@ -67,12 +68,15 @@
 <url><loc>https://scienceverse.github.io/papercheck/reference/openalex.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_api_check.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_check_id.html</loc></url>
+<url><loc>https://scienceverse.github.io/papercheck/reference/osf_children.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_contents.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_delay.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_file_data.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_files.html</loc></url>
+<url><loc>https://scienceverse.github.io/papercheck/reference/osf_get_all_pages.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_headers.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_info.html</loc></url>
+<url><loc>https://scienceverse.github.io/papercheck/reference/osf_links.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_node_data.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_parent_project.html</loc></url>
 <url><loc>https://scienceverse.github.io/papercheck/reference/osf_preprint_data.html</loc></url>

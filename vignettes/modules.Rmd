@@ -148,14 +148,29 @@ List all OSF links and whether they are open, closed, or do not exist. This requ
 ```{r}
 osf_check <- module_run(paper, "osf_check")
 
-osf_check$table
+osf_check$summary
 ```
 
-This would take a while to run for the 341 unique OSF links found in the PsychSci set (usually 1-2 seconds per link), so we will skip it here (but can reveal we found 10 closed links).
+The returned table contains additional information about the links if they are found and open.
+
+```{r}
+osf_check$table[1,] |> t()
+```
+
+
+You can also run this module on a batch of papers. You can only make 100 API requests per hour, unless you authorise your requests, when you can make 10K requests per day. The OSF functions in papercheck often make several requests per URL to get all of the info, so it's worthwhile setting your PAT. You can authorise them by creating an OSF token at <https://osf.io/settings/tokens> and including the following line in your .Renviron file (which you can open using `usethis::edit_r_environ()`):
+
+```
+OSF_PAT="replace-with-your-token-string"
+```
+
+This would take a while to run for the 333 unique OSF links found in the PsychSci set (usually a few links per second), so we will skip it here (but can reveal we found 10 closed links).
 
 ```{r, eval = FALSE}
 osf_check_ps <- module_run(psychsci, "osf_check")
 ```
+
+
 
 ### ref_consistency
 

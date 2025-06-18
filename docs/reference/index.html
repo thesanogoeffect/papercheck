@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">papercheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9043</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9044</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="reading-in-papers">Reading in Papers<a class="anchor" aria-label="anchor" href="#reading-in-papers"></a></h2>
 
 
 
@@ -51,46 +51,51 @@
 
       <dl><dt>
 
-          <code><a href="accuracy.html">accuracy()</a></code>
+          <code><a href="pdf2grobid.html">pdf2grobid()</a></code>
 
         </dt>
-        <dd>Accuracy</dd>
+        <dd>Convert a PDF to Grobid XML</dd>
       </dl><dl><dt>
 
-          <code><a href="author_table.html">author_table()</a></code>
+          <code><a href="read_grobid.html">read_grobid()</a></code>
 
         </dt>
-        <dd>Get author information in a table</dd>
+        <dd>Get paper from grobid XML file</dd>
       </dl><dl><dt>
 
-          <code><a href="check_orcid.html">check_orcid()</a></code>
+          <code><a href="read_cermine.html">read_cermine()</a></code>
 
         </dt>
-        <dd>Check validity of ORCiD</dd>
+        <dd>Get paper from cermine XML file</dd>
       </dl><dl><dt>
 
-          <code><a href="concat_tables.html">concat_tables()</a></code>
+          <code><a href="read_text.html">read_text()</a></code>
 
         </dt>
-        <dd>Concatenate tables</dd>
+        <dd>Get paper from text</dd>
       </dl><dl><dt>
 
-          <code><a href="credit_roles.html">credit_roles()</a></code>
+          <code><a href="paper_validate.html">paper_validate()</a></code>
 
         </dt>
-        <dd>CRediT Roles</dd>
-      </dl><dl><dt>
+        <dd>Validate Papers</dd>
+      </dl></div><div class="section level2">
+      <h2 id="demo-resources">Demo Resources<a class="anchor" aria-label="anchor" href="#demo-resources"></a></h2>
 
-          <code><a href="crossref.html">crossref()</a></code>
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="demoxml.html">demoxml()</a></code>
 
         </dt>
-        <dd>Crossref info</dd>
-      </dl><dl><dt>
-
-          <code><a href="demodir.html">demodir()</a></code>
-
-        </dt>
-        <dd>Get demo directory of grobid XML files</dd>
+        <dd>Get demo XML file</dd>
       </dl><dl><dt>
 
           <code><a href="demopdf.html">demopdf()</a></code>
@@ -99,16 +104,33 @@
         <dd>Get demo PDF file</dd>
       </dl><dl><dt>
 
-          <code><a href="demoxml.html">demoxml()</a></code>
+          <code><a href="demodir.html">demodir()</a></code>
 
         </dt>
-        <dd>Get demo XML file</dd>
+        <dd>Get demo directory of grobid XML files</dd>
       </dl><dl><dt>
 
-          <code><a href="distinctive_words.html">distinctive_words()</a></code>
+          <code><a href="psychsci.html">psychsci</a></code>
 
         </dt>
-        <dd>Get Distinctive Words</dd>
+        <dd>Psychologial Science Open Access Paper Set</dd>
+      </dl></div><div class="section level2">
+      <h2 id="search-papers">Search Papers<a class="anchor" aria-label="anchor" href="#search-papers"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="search_text.html">search_text()</a></code>
+
+        </dt>
+        <dd>Search text</dd>
       </dl><dl><dt>
 
           <code><a href="expand_text.html">expand_text()</a></code>
@@ -117,46 +139,10 @@
         <dd>Expand text</dd>
       </dl><dl><dt>
 
-          <code><a href="file_types.html">file_types</a></code>
+          <code><a href="concat_tables.html">concat_tables()</a></code>
 
         </dt>
-        <dd>File Types</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_orcid.html">get_orcid()</a></code>
-
-        </dt>
-        <dd>Get ORCiD from Name</dd>
-      </dl><dl><dt>
-
-          <code><a href="github_files.html">github_files()</a></code>
-
-        </dt>
-        <dd>Get File List from GitHub</dd>
-      </dl><dl><dt>
-
-          <code><a href="github_info.html">github_info()</a></code>
-
-        </dt>
-        <dd>Get GitHub Repo Info</dd>
-      </dl><dl><dt>
-
-          <code><a href="github_languages.html">github_languages()</a></code>
-
-        </dt>
-        <dd>Get Languages from GitHub Repo</dd>
-      </dl><dl><dt>
-
-          <code><a href="github_readme.html">github_readme()</a></code>
-
-        </dt>
-        <dd>Get README from GitHub</dd>
-      </dl><dl><dt>
-
-          <code><a href="github_repo.html">github_repo()</a></code>
-
-        </dt>
-        <dd>Get Short GitHub Repo Name</dd>
+        <dd>Concatenate tables</dd>
       </dl><dl><dt>
 
           <code><a href="info_table.html">info_table()</a></code>
@@ -164,6 +150,76 @@
         </dt>
         <dd>Get paper information in a table</dd>
       </dl><dl><dt>
+
+          <code><a href="author_table.html">author_table()</a></code>
+
+        </dt>
+        <dd>Get author information in a table</dd>
+      </dl></div><div class="section level2">
+      <h2 id="module-functions">Module Functions<a class="anchor" aria-label="anchor" href="#module-functions"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="module_list.html">module_list()</a></code>
+
+        </dt>
+        <dd>List modules</dd>
+      </dl><dl><dt>
+
+          <code><a href="module_help.html">module_help()</a></code>
+
+        </dt>
+        <dd>Get Module Help</dd>
+      </dl><dl><dt>
+
+          <code><a href="module_info.html">module_info()</a></code>
+
+        </dt>
+        <dd>Get module information</dd>
+      </dl><dl><dt>
+
+          <code><a href="module_run.html">module_run()</a></code>
+
+        </dt>
+        <dd>Run a module</dd>
+      </dl><dl><dt>
+
+          <code><a href="module_report.html">module_report()</a></code>
+
+        </dt>
+        <dd>Report from module output</dd>
+      </dl><dl><dt>
+
+          <code><a href="report.html">report()</a></code>
+
+        </dt>
+        <dd>Create a report</dd>
+      </dl><dl><dt>
+
+          <code><a href="papercheck_app.html">papercheck_app()</a></code>
+
+        </dt>
+        <dd>Launch Shiny App</dd>
+      </dl></div><div class="section level2">
+      <h2 id="llm-functions">LLM Functions<a class="anchor" aria-label="anchor" href="#llm-functions"></a></h2>
+
+      <div class="section-desc"><p>Useful functions for checking GitHub repositories</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="llm.html">llm()</a></code>
 
@@ -187,49 +243,18 @@
 
         </dt>
         <dd>List Available LLM Models</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="osf-functions">OSF Functions<a class="anchor" aria-label="anchor" href="#osf-functions"></a></h2>
 
-          <code><a href="module_help.html">module_help()</a></code>
+      <div class="section-desc"><p>Useful functions for checking OSF URLs</p></div>
 
-        </dt>
-        <dd>Get Module Help</dd>
-      </dl><dl><dt>
 
-          <code><a href="module_info.html">module_info()</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Get module information</dd>
-      </dl><dl><dt>
 
-          <code><a href="module_list.html">module_list()</a></code>
 
-        </dt>
-        <dd>List modules</dd>
-      </dl><dl><dt>
 
-          <code><a href="module_report.html">module_report()</a></code>
-
-        </dt>
-        <dd>Report from module output</dd>
-      </dl><dl><dt>
-
-          <code><a href="module_run.html">module_run()</a></code>
-
-        </dt>
-        <dd>Run a module</dd>
-      </dl><dl><dt>
-
-          <code><a href="op-null-default.html">`%||%`</a></code>
-
-        </dt>
-        <dd>Default value for <code>NULL</code></dd>
-      </dl><dl><dt>
-
-          <code><a href="openalex.html">openalex()</a></code>
-
-        </dt>
-        <dd>Get OpenAlex info for a paper</dd>
-      </dl><dl><dt>
+      <dl><dt>
 
           <code><a href="osf_api_check.html">osf_api_check()</a></code>
 
@@ -249,22 +274,10 @@
         <dd>Set the OSF delay</dd>
       </dl><dl><dt>
 
-          <code><a href="osf_files.html">osf_files()</a></code>
+          <code><a href="osf_links.html">osf_links()</a></code>
 
         </dt>
-        <dd>List Files in an OSF Component</dd>
-      </dl><dl><dt>
-
-          <code><a href="osf_info.html">osf_info()</a></code>
-
-        </dt>
-        <dd>Retrieve info from the OSF by ID</dd>
-      </dl><dl><dt>
-
-          <code><a href="osf_parent_project.html">osf_parent_project()</a></code>
-
-        </dt>
-        <dd>Get OSF Parent Project</dd>
+        <dd>Find OSF Links in Papers</dd>
       </dl><dl><dt>
 
           <code><a href="osf_retrieve.html">osf_retrieve()</a></code>
@@ -273,70 +286,80 @@
         <dd>Retrieve info from the OSF by ID</dd>
       </dl><dl><dt>
 
-          <code><a href="paper.html">paper()</a></code>
+          <code><a href="summarize_contents.html">summarize_contents()</a></code>
 
         </dt>
-        <dd>Create a paper object</dd>
+        <dd>Summarize Directory Contents</dd>
+      </dl></div><div class="section level2">
+      <h2 id="github-functions">GitHub Functions<a class="anchor" aria-label="anchor" href="#github-functions"></a></h2>
+
+      <div class="section-desc"><p>Useful functions for checking GitHub repositories</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="github_config.html">github_config()</a></code>
+
+        </dt>
+        <dd>GitHub Configuration</dd>
       </dl><dl><dt>
 
-          <code><a href="paper_info.html">paper_info()</a></code>
+          <code><a href="github_repo.html">github_repo()</a></code>
 
         </dt>
-        <dd>Update Paper Info</dd>
+        <dd>Get Short GitHub Repo Name</dd>
       </dl><dl><dt>
 
-          <code><a href="paper_validate.html">paper_validate()</a></code>
+          <code><a href="github_info.html">github_info()</a></code>
 
         </dt>
-        <dd>Validate Papers</dd>
+        <dd>Get GitHub Repo Info</dd>
       </dl><dl><dt>
 
-          <code><a href="papercheck_app.html">papercheck_app()</a></code>
+          <code><a href="github_files.html">github_files()</a></code>
 
         </dt>
-        <dd>Launch Shiny App</dd>
+        <dd>Get File List from GitHub</dd>
       </dl><dl><dt>
 
-          <code><a href="paperlist.html">paperlist()</a></code>
+          <code><a href="github_readme.html">github_readme()</a></code>
 
         </dt>
-        <dd>Create a paperlist object</dd>
+        <dd>Get README from GitHub</dd>
       </dl><dl><dt>
 
-          <code><a href="pdf2grobid.html">pdf2grobid()</a></code>
+          <code><a href="github_languages.html">github_languages()</a></code>
 
         </dt>
-        <dd>Convert a PDF to Grobid XML</dd>
+        <dd>Get Languages from GitHub Repo</dd>
+      </dl></div><div class="section level2">
+      <h2 id="integrations">Integrations<a class="anchor" aria-label="anchor" href="#integrations"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="openalex.html">openalex()</a></code>
+
+        </dt>
+        <dd>Get OpenAlex info for a paper</dd>
       </dl><dl><dt>
 
-          <code><a href="psychsci.html">psychsci</a></code>
+          <code><a href="crossref.html">crossref()</a></code>
 
         </dt>
-        <dd>Psychologial Science Open Access Paper Set</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_cermine.html">read_cermine()</a></code>
-
-        </dt>
-        <dd>Get paper from cermine XML file</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_grobid.html">read_grobid()</a></code>
-
-        </dt>
-        <dd>Get paper from grobid XML file</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_text.html">read_text()</a></code>
-
-        </dt>
-        <dd>Get paper from text</dd>
-      </dl><dl><dt>
-
-          <code><a href="report.html">report()</a></code>
-
-        </dt>
-        <dd>Create a report</dd>
+        <dd>Crossref info</dd>
       </dl><dl><dt>
 
           <code><a href="retractionwatch.html">retractionwatch</a></code>
@@ -345,22 +368,51 @@
         <dd>RetractionWatch data</dd>
       </dl><dl><dt>
 
-          <code><a href="search_text.html">search_text()</a></code>
+          <code><a href="file_types.html">file_types</a></code>
 
         </dt>
-        <dd>Search text</dd>
+        <dd>File Types</dd>
       </dl><dl><dt>
 
-          <code><a href="stats.html">stats()</a></code>
+          <code><a href="check_orcid.html">check_orcid()</a></code>
 
         </dt>
-        <dd>Check Stats</dd>
+        <dd>Check validity of ORCiD</dd>
       </dl><dl><dt>
 
-          <code><a href="summarize_contents.html">summarize_contents()</a></code>
+          <code><a href="get_orcid.html">get_orcid()</a></code>
 
         </dt>
-        <dd>Summarize Directory Contents</dd>
+        <dd>Get ORCiD from Name</dd>
+      </dl><dl><dt>
+
+          <code><a href="credit_roles.html">credit_roles()</a></code>
+
+        </dt>
+        <dd>CRediT Roles</dd>
+      </dl></div><div class="section level2">
+      <h2 id="validation-functions">Validation Functions<a class="anchor" aria-label="anchor" href="#validation-functions"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="validate.html">validate()</a></code>
+
+        </dt>
+        <dd>Validate a module</dd>
+      </dl><dl><dt>
+
+          <code><a href="accuracy.html">accuracy()</a></code>
+
+        </dt>
+        <dd>Accuracy</dd>
       </dl><dl><dt>
 
           <code><a href="text_features.html">text_features()</a></code>
@@ -369,18 +421,42 @@
         <dd>Text features</dd>
       </dl><dl><dt>
 
-          <code><a href="validate.html">validate()</a></code>
+          <code><a href="distinctive_words.html">distinctive_words()</a></code>
 
         </dt>
-        <dd>Validate a module</dd>
-      </dl><dl><dt>
+        <dd>Get Distinctive Words</dd>
+      </dl></div><div class="section level2">
+      <h2 id="extras">Extras<a class="anchor" aria-label="anchor" href="#extras"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="verbose.html">verbose()</a></code>
 
         </dt>
         <dd>Set or get papercheck verbosity</dd>
+      </dl><dl><dt>
+
+          <code><a href="stats.html">stats()</a></code>
+
+        </dt>
+        <dd>Check Stats</dd>
+      </dl><dl><dt>
+
+          <code><a href="op-null-default.html">`%||%`</a></code>
+
+        </dt>
+        <dd>Default value for <code>NULL</code></dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
