@@ -38,7 +38,7 @@
 
     <a class="navbar-brand me-2" href="index.html">papercheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9044</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9045</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,11 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of papercheck is to automatically check scientific papers for best practices.</p>
+<p><a href="https://app.codecov.io/gh/scienceverse/papercheck" class="external-link"><img src="https://codecov.io/gh/scienceverse/papercheck/graph/badge.svg" alt="Codecov test coverage"></a> <!-- badges: end --></p>
+<p>PaperCheck provides extendable and integrated tools for automatically checking scientific papers for best practices.</p>
+<p>Papercheck is developed by a collaborative team of researchers, consisting of (from left to right in the picture below) <a href="https://debruine.github.io" class="external-link">Lisa DeBruine</a> (developer and maintainer) and <a href="https://sites.google.com/site/lakens2/Home" class="external-link">Daniël Lakens</a> (developer), <a href="https://research.vu.nl/en/persons/rene-bekkers" class="external-link">René Bekkers</a> (collaborator and PI of <a href="https://tdcc.nl/tdcc-ssh-challenge-projects/research-transparency-check" class="external-link">Transparency Check</a>), <a href="https://ssreplicationcentre.com/author/cristian-mesquida/" class="external-link">Cristian Mesquida</a> (postdoctoral researcher), and Max Littel and Jakub Werner (research assistants). Papercheck was initially developed by Lisa and Daniël in 2024 during Lisa’s visiting professorship at the Eindhoven Artificial Intelligence Systems Institute (<a href="https://www.tue.nl/en/research/institutes/eindhoven-artificial-intelligence-systems-institute" class="external-link">EAISI</a>).</p>
+<p><img src="https://scienceverse.github.io/papercheck/articles/papercheck_team.png" data-fig-alt="Faces of the team"></p>
+<p>Check out our series of <a href="https://scienceverse.github.io/papercheck/articles/index.html">blog posts introducing Papercheck</a>!</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -87,18 +91,43 @@
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/papercheck" class="external-link">papercheck</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/papercheck" class="external-link">papercheck</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; *******************************************</span></span>
+<span><span class="co">#&gt; ✅ Welcome to PaperCheck</span></span>
+<span><span class="co">#&gt; For support and examples visit:</span></span>
+<span><span class="co">#&gt; https://scienceverse.github.io/papercheck/</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ⚠️ This is alpha software; please check any</span></span>
+<span><span class="co">#&gt; results. False positives and negatives will</span></span>
+<span><span class="co">#&gt; occur at unknown rates.</span></span>
+<span><span class="co">#&gt; *******************************************</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="importing-papers">Importing Papers<a class="anchor" aria-label="anchor" href="#importing-papers"></a>
+</h3>
 <p>Convert a PDF to grobid XML format, then read it in as a paper object.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/demopdf.html">demopdf</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># use the path of your own PDF</span></span>
-<span><span class="va">grobid</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pdf2grobid.html">pdf2grobid</a></span><span class="op">(</span><span class="va">pdf</span><span class="op">)</span></span>
-<span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_grobid.html">read_grobid</a></span><span class="op">(</span><span class="va">grobid</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/demopdf.html">demopdf</a></span><span class="op">(</span><span class="op">)</span>       <span class="co"># use the path of your own PDF</span></span>
+<span><span class="va">xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pdf2grobid.html">pdf2grobid</a></span><span class="op">(</span><span class="va">pdf</span><span class="op">)</span> <span class="co"># requires a web connection &amp; resource-intensive, </span></span>
+<span>                       <span class="co"># so save XMLs for use with scripts</span></span>
+<span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_grobid.html">read_grobid</a></span><span class="op">(</span><span class="va">xml</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
+</h3>
+<p>The functions <code><a href="reference/pdf2grobid.html">pdf2grobid()</a></code> and <code><a href="reference/read_grobid.html">read_grobid()</a></code> also work on a folder of files, returning a list of XML file paths or paper objects, respectively. Most functions also work on a list of paper objects.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># read in all the XML files in the demo directory</span></span>
+<span><span class="va">grobid_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/demodir.html">demodir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_grobid.html">read_grobid</a></span><span class="op">(</span><span class="va">grobid_dir</span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="search-text">Search Text<a class="anchor" aria-label="anchor" href="#search-text"></a>
 </h3>
 <p>Search the returned text. The regex pattern below searches for text that looks like statistical values (e.g., <code>N=313</code> or <code>p = 0.17</code>).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"[a-zA-Z]\\S*\\s*(=|&lt;)\\s*[0-9\\.-]*\\d"</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"[a-zA-Z]+\\S*\\s*(=|&lt;)\\s*[0-9\\.-]*\\d"</span></span>
 <span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">paper</span>, <span class="va">pattern</span>, </span>
 <span>                    return <span class="op">=</span> <span class="st">"match"</span>, </span>
 <span>                    perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -196,101 +225,52 @@
 </tr>
 </tbody>
 </table>
+<p>See <a href="https://scienceverse.github.io/papercheck/articles/papercheck.html#search-text">Getting Started</a> for even more text search capabilities.</p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
-</h2>
-<p>The functions <code><a href="reference/pdf2grobid.html">pdf2grobid()</a></code> and <code><a href="reference/read_grobid.html">read_grobid()</a></code> also work on a folder of files, returning a list of XML file paths or paper objects, respectively. The functions <code><a href="reference/search_text.html">search_text()</a></code>, <code><a href="reference/expand_text.html">expand_text()</a></code> and <code><a href="reference/llm.html">llm()</a></code> also work on a list of paper objects.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># read in all the XML files in the demo directory</span></span>
-<span><span class="va">grobid_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/demodir.html">demodir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_grobid.html">read_grobid</a></span><span class="op">(</span><span class="va">grobid_dir</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># select sentences in the intros containing the text "previous"</span></span>
-<span><span class="va">previous</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">papers</span>, <span class="st">"previous"</span>, </span>
-<span>                        section <span class="op">=</span> <span class="st">"intro"</span>, </span>
-<span>                        return <span class="op">=</span> <span class="st">"sentence"</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-</colgroup>
-<thead><tr>
-<th align="left">text</th>
-<th align="left">section</th>
-<th align="left">header</th>
-<th align="right">div</th>
-<th align="right">p</th>
-<th align="right">s</th>
-<th align="left">id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td align="left">Royzman et al’s non-replication potentially calls into question the reliability of previously reported links between having an other-sex sibling and moral opposition to third-party sibling incest.</td>
-<td align="left">intro</td>
-<td align="left">Introduction</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="left">incest</td>
-</tr>
-<tr>
-<td align="left">Previous research has shown that making cost-benefit analyses of using statistical approaches explicit can influence researchers’ attitudes.</td>
-<td align="left">intro</td>
-<td align="left">[div-01]</td>
-<td align="right">1</td>
-<td align="right">8</td>
-<td align="right">5</td>
-<td align="left">prereg</td>
-</tr>
-<tr>
-<td align="left">When exploring difference in responses between previous experience with pre-registration, we see a clear trend where reasearchers who have pre-registered studies in their own research indicate pre-registration is more beneficial, and indicate higher a higher likelihood of pre-registering studies in the future, and higher percentage of studies for which they would consider pre-registering (see Table 2).</td>
-<td align="left">intro</td>
-<td align="left">Attitude</td>
-<td align="right">3</td>
-<td align="right">7</td>
-<td align="right">1</td>
-<td align="left">prereg</td>
-</tr>
-</tbody>
-</table>
 <div class="section level3">
 <h3 id="large-language-models">Large Language Models<a class="anchor" aria-label="anchor" href="#large-language-models"></a>
 </h3>
-<p>You can query the extracted text of papers with LLMs using <a href="https://console.groq.com/docs/" class="external-link">groq</a>.</p>
-<p>Use <code><a href="reference/search_text.html">search_text()</a></code> first to narrow down the text into what you want to query. Below, we limited search to the first two papers’ introduction sections, and returned the full section. Then we asked an LLM “What is the hypothesis of this study?”.</p>
+<p>You can query the extracted text of papers with LLMs using <a href="https://console.groq.com/docs/" class="external-link">groq</a>. See <code><a href="reference/llm.html">?llm</a></code> for details of how to get and set up your API key, choose an LLM, and adjust settings.</p>
+<p>Use <code><a href="reference/search_text.html">search_text()</a></code> first to narrow down the text into what you want to query. Below, we limited search to a paper’s method section, and returned sentences that contains the word “power” and at least one number. Then we asked an LLM to determine if this is an a priori power analysis.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hypotheses</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">papers</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, </span>
-<span>                          section <span class="op">=</span> <span class="st">"intro"</span>, </span>
-<span>                          return <span class="op">=</span> <span class="st">"section"</span><span class="op">)</span></span>
-<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="st">"What is the hypothesis of this study? Answer as briefly as possible."</span></span>
-<span><span class="va">llm_hypo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/llm.html">llm</a></span><span class="op">(</span><span class="va">hypotheses</span>, <span class="va">query</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">power</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[</span><span class="fl">9</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co"># sentences containing the word power</span></span>
+<span>  <span class="fu"><a href="reference/search_text.html">search_text</a></span><span class="op">(</span><span class="st">"power"</span>, section <span class="op">=</span> <span class="st">"method"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ask a specific question with specific response format</span></span>
+<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="st">'Does this sentence report an a priori power analysis? Answer only the words "TRUE" or "FALSE".'</span></span>
+<span></span>
+<span><span class="va">llm_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/llm.html">llm</a></span><span class="op">(</span><span class="va">power</span>, <span class="va">query</span>, seed <span class="op">=</span> <span class="fl">8675309</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="50%">
-<col width="50%">
+<col width="33%">
+<col width="33%">
+<col width="33%">
 </colgroup>
 <thead><tr>
-<th align="left">id</th>
+<th align="left">text</th>
 <th align="left">answer</th>
+<th align="left">id</th>
 </tr></thead>
 <tbody>
 <tr>
-<td align="left">eyecolor</td>
-<td align="left">The hypothesis of this study is that people tend to choose romantic partners with eye colors similar to those of their opposite-sex parents, a phenomenon known as positive sexual imprinting.</td>
+<td align="left">For the first part of the task, 11 static visual images, one from each of the scenes in the film were presented once each on a black background for 2 s using Power-Point.</td>
+<td align="left">FALSE</td>
+<td align="left">0956797615583071</td>
 </tr>
 <tr>
-<td align="left">incest</td>
-<td align="left">The hypothesis is that moral opposition to third-party sibling incest is greater among individuals with other-sex siblings than among individuals with same-sex siblings.</td>
+<td align="left">A sample size of 26 per group was required to ensure 80% power to detect this difference at the 5% significance level.</td>
+<td align="left">TRUE</td>
+<td align="left">0956797615583071</td>
+</tr>
+<tr>
+<td align="left">A sample size of 18 per condition was required in order to ensure an 80% power to detect this difference at the 5% significance level.</td>
+<td align="left">TRUE</td>
+<td align="left">0956797615583071</td>
 </tr>
 </tbody>
 </table>
+<p>See <a href="articles/papercheck.html#large-language-models">Getting Started</a> for an example with more detailed responses.</p>
 </div>
 <div class="section level3">
 <h3 id="modules">Modules<a class="anchor" aria-label="anchor" href="#modules"></a>
@@ -300,20 +280,19 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/module_list.html">module_list</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <ul>
-<li>all-p-values: List all p-values in the text, returning the matched text (e.g., ‘p = 0.04’) and document location in a table.</li>
-<li>all-urls: List all the URLs in the main text</li>
-<li>imprecise-p: List any p-values reported with insufficient precision (e.g., p &lt; .05 or p = n.s.)</li>
-<li>llm-summarise: Generate a 1-sentence summary for each section</li>
+<li>all_p_values: List all p-values in the text, returning the matched text (e.g., ‘p = 0.04’) and document location in a table.</li>
+<li>all_urls: List all the URLs in the main text.</li>
+<li>effect_size: Detect t-tests and F-tests with missing effect sizes</li>
+<li>exact_p: List any p-values reported with insufficient precision (e.g., p &lt; .05 or p = n.s.)</li>
 <li>marginal: List all sentences that describe an effect as ‘marginally significant’.</li>
-<li>osf-check: List all OSF links and whether they are open, closed, or do not exist.</li>
-<li>ref-consistency: Check if all references are cited and all citations are referenced</li>
+<li>osf_check: List all OSF links and whether they are open, closed, or do not exist.</li>
+<li>ref_consistency: Check if all references are cited and all citations are referenced</li>
 <li>retractionwatch: Flag any cited papers in the RetractionWatch database</li>
-<li>sample-size-ml: [DEMO] Classify each sentence for whether it contains sample-size information, returning only sentences with probable sample-size info.</li>
 <li>statcheck: Check consistency of p-values and test statistics</li>
 </ul>
 <p>To run a built-in module on a paper, you can reference it by name.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"all-p-values"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"all_p_values"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="16%">
@@ -363,13 +342,17 @@
 </tr>
 </tbody>
 </table>
+<p>See the <a href="https://scienceverse.github.io/papercheck/articles/modules.html">Modules Vignette</a> for more detail on the built-in modules, and <a href="https://scienceverse.github.io/papercheck/articles/creating_modules.html">Creating Modules</a> for examples of how to make your own modules.</p>
 </div>
 <div class="section level3">
 <h3 id="reports">Reports<a class="anchor" aria-label="anchor" href="#reports"></a>
 </h3>
-<p>You can generate a report from any set of modules. The default set is <code>c("imprecise-p", "marginal", "osf-check", "retractionwatch", "ref-consistency")</code></p>
+<p>You can generate a report from any set of modules. The default set is <code>c("exact_p", "marginal", "effect_size", osf_check", "retractionwatch", "ref_consistency")</code></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">paper_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/report.html">report</a></span><span class="op">(</span><span class="va">paper</span>, output_format <span class="op">=</span> <span class="st">"html"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">paper_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/report.html">report</a></span><span class="op">(</span><span class="va">paper</span>, </span>
+<span>                     output_format <span class="op">=</span> <span class="st">"html"</span>, </span>
+<span>                     output_file <span class="op">=</span> <span class="st">"example_report"</span><span class="op">)</span></span></code></pre></div>
+<p><a href="articles/report-example.html">Example Report</a></p>
 </div>
 </div>
 </div>

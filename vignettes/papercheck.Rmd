@@ -101,6 +101,74 @@ paper_from_doc <- read_text(filename)
 ```
 
 
+### Batch Processing
+
+The functions `pdf2grobid()` and `read_grobid()` also work on a folder of files, returning a list of XML file paths or paper objects, respectively. The functions `search_text()`, `expand_text()` and `llm()` also work on a list of paper objects.
+
+```{r}
+grobid_dir <- demodir()
+
+papers <- read_grobid(grobid_dir)
+
+hypotheses <- search_text(papers, "hypothesi", 
+                          section = "intro", 
+                          return = "paragraph")
+```
+
+## Paper Components
+
+Paper objects contain a lot of structured information, including info, references, and citations.
+
+### Info
+
+```{r}
+paper$info
+```
+
+### References
+
+References are provided in a tabular format.
+
+```{r, eval = FALSE}
+paper$references
+```
+
+```{r, echo = FALSE}
+knitr::kable(paper$references)
+```
+
+### Citations
+
+Citations are also provided in a tabular format, with a bib_id to match the references.
+
+```{r, eval = FALSE}
+paper$citations
+```
+
+```{r, echo = FALSE}
+knitr::kable(paper$citations)
+```
+
+### Batch
+
+There are functions to combine the infomation from a list of papers, like the `psychsci` built-in dataset of 250 open access papers from Psychological Science.
+
+```{r}
+info_table(psychsci[1:5], c("title", "doi"))
+```
+
+
+```{r}
+concat_tables(psychsci[1:5], "references") |>
+  dplyr::filter(!is.na(doi))
+```
+
+```{r}
+concat_tables(psychsci[1:40], "citations") |>
+  dplyr::filter(grepl("replicat", text)) |>
+  dplyr::count(id, text)
+```
+
 ## Search Text
 
 You can access a parsed table of the full text of the paper via `paper$full_text`, but you may find it more convenient to use the function `search_text()`. The defaults return a data table of each sentence, with the section type, header, div, paragraph and sentence numbers, and file name. (The section type is a best guess from the headers, so may not always be accurate.)
@@ -232,24 +300,88 @@ data.frame(
 
 ### LLM Queries
 
-You can ask an LLM to process text. Use `search_text()` first to narrow down the text into what you want to query. Below, we returned the first two papers' introduction sections, and returned the full section. Then we asked an LLM "What is the hypothesis of this study?".
+You can query the extracted text of papers with LLMs using [groq](https://console.groq.com/docs/). See `?llm` for details of how to get and set up your API key, choose an LLM, and adjust settings. 
+
+Use `search_text()` first to narrow down the text into what you want to query. Below, we limited search to the first ten papers' method sections, and returned sentences that contains the word "power" and at least one number. Then we asked an LLM to determine if this is an a priori power analysis, and if so, to return some relevant values in a JSON-structured format.
 
 ```{r, eval = FALSE}
-hypotheses <- search_text(papers[1:2], 
-                          section = "intro", 
-                          return = "section")
-query <- "What is the hypothesis of this study? Answer as briefly as possible."
-llm_hypo <- llm(hypotheses, query)
+power <- psychsci[1:10] |>
+  # sentences containing the word power
+  search_text("power", section = "method") |>
+  # and containing at least one number
+  search_text("[0-9]") 
+
+# ask a specific question with specific response format
+query <- 'Does this sentence report an a priori power analysis? If so, return the test, sample size, critical alpha criterion, power level, effect size and effect size metric plus any other relevant parameters, in JSON format like:
+
+{
+  "apriori": true, 
+  "test": "paired samples t-test", 
+  "sample": 20, 
+  "alpha": 0.05, 
+  "power": 0.8, 
+  "es": 0.4, 
+  "es_metric": "cohen\'s D"
+}
+
+If not, return {"apriori": false}
+
+Answer only in valid JSON format, starting with { and ending with }.'
+
+llm_power <- llm(power, query, seed = 8675309)
 ```
 
-```{r, echo = FALSE}
-llm_hypo <- data.frame(
-  id = c("eyecolor.xml", "incest.xml"),
-  answer = c("The hypothesis of this study is that humans exhibit positive sexual imprinting, where individuals choose partners with physical characteristics similar to those of their opposite-sex parent.", 
-             "The hypothesis is that moral opposition to third-party sibling incest is greater among individuals with other-sex siblings than among individuals with same-sex siblings.")
-)
 
-knitr::kable(llm_hypo)
+```{r, echo = FALSE}
+# dput(llm_power)
+llm_power <- structure(list(text = c("Sample size was calculated with an a priori power analysis, using the effect sizes reported by Küpper et al. (2014), who used identical procedures, materials, and dependent measures.", 
+"We determined that a minimum sample size of 7 per group would be necessary for 95% power to detect an effect.", 
+"For the first part of the task, 11 static visual images, one from each of the scenes in the film were presented once each on a black background for 2 s using Power-Point.", 
+"A sample size of 26 per group was required to ensure 80% power to detect this difference at the 5% significance level.", 
+"A sample size of 18 per condition was required in order to ensure an 80% power to detect this difference at the 5% significance level.", 
+"The 13,500 selected loan requests conservatively achieved a power of .98 for an effect size of .07 at an alpha level of .05.", 
+"On the basis of simulations over a range of expected effect sizes for contrasts of fMRI activity, we estimated that a sample size of 24 would provide .80 power at a conservative brainwide alpha threshold of .002 (although such thresholds ideally should be relaxed for detecting activity in regions where an effect is predicted).", 
+"Stimulus sample size was determined via power analysis of the sole existing similar study, which used neural activity to predict Internet downloads of music (Berns & Moore, 2012).", 
+"The effect size from that study implied that a sample size of 72 loan requests would be required to achieve .80 power at an alpha level of .05."
+), section = c("method", "method", "method", "method", "method", 
+"method", "method", "method", "method"), header = c("Participants", 
+"Participants", "Tasks and measures", "Intrusion-provocation task (IPT).", 
+"Method", "Internet study", "Neuroimaging study", "Neuroimaging study", 
+"Neuroimaging study"), div = c(3, 3, 4, 5, 10, 3, 4, 4, 4), p = c(1, 
+1, 2, 13, 3, 2, 5, 5, 5), s = c(2L, 3L, 3L, 3L, 3L, 8L, 3L, 7L, 
+8L), id = c("0956797615569889", "0956797615569889", "0956797615583071", 
+"0956797615583071", "0956797615583071", "0956797615588467", "0956797615588467", 
+"0956797615588467", "0956797615588467"), answer = c("{\n  \"apriori\": true\n}", 
+"{\n  \"apriori\": true, \n  \"test\": null, \n  \"sample\": 7, \n  \"alpha\": null, \n  \"power\": 0.95, \n  \"es\": null, \n  \"es_metric\": null\n}", 
+"{\"apriori\": false}", "{\n  \"apriori\": true, \n  \"test\": \"two-sample t-test\", \n  \"sample\": 26, \n  \"alpha\": 0.05, \n  \"power\": 0.8\n}", 
+"{\n  \"apriori\": true, \n  \"test\": \"t-test\", \n  \"sample\": 18, \n  \"alpha\": 0.05, \n  \"power\": 0.8\n}", 
+"{\n  \"apriori\": true, \n  \"test\": null, \n  \"sample\": 13500, \n  \"alpha\": 0.05, \n  \"power\": 0.98, \n  \"es\": 0.07, \n  \"es_metric\": null\n}", 
+"{\n  \"apriori\": true, \n  \"test\": \"unknown\", \n  \"sample\": 24, \n  \"alpha\": 0.002, \n  \"power\": 0.8, \n  \"es\": \"unknown\", \n  \"es_metric\": \"unknown\"\n}", 
+"{\"apriori\": true}", "{\n  \"apriori\": true, \n  \"test\": null, \n  \"sample\": 72, \n  \"alpha\": 0.05, \n  \"power\": 0.8, \n  \"es\": null, \n  \"es_metric\": null\n}"
+), time = c(0.054125226, 0.221003837, 0.065295072, 0.191989067, 
+0.184921361, 0.248274644, 0.345732381, 0.046376265, 0.232392039
+), tokens = c(225L, 259L, 224L, 254L, 255L, 272L, 302L, 221L, 
+269L)), row.names = c(NA, -9L), class = c("ppchk_llm", "data.frame"
+), llm = list(messages = list(list(role = "system", content = "Does this sentence report an a priori power analysis? If so, return the test, sample size, critical alpha criterion, power level, effect size and effect size metric plus any other relevant parameters, in JSON format like:\n{\n  \"apriori\": true, \n  \"test\": \"paired samples t-test\", \n  \"sample\": 20, \n  \"alpha\": 0.05, \n  \"power\": 0.8, \n  \"es\": 0.4, \n  \"es_metric\": \"cohen's D\"\n}\nIf not, return {\"apriori\": false}\nAnswer only in valid JSON format, starting with { and ending with }."), 
+    list(role = "user", content = "")), model = "llama-3.3-70b-versatile", 
+    temperature = 0.5, max_completion_tokens = 1024L, top_p = 0.95, 
+    seed = 8675309, stream = FALSE, stop = NULL))
+
+```
+
+### Expand JSON
+
+It is useful to ask an LLM to return data in JSON structured format, but can be frustrating to extract the data, especially where the LLM makes syntax mistakes. The function `json_expand()` tries to expand a column with a JSON-formatted response into columns and deals with it gracefully (sets an 'error' column to "parsing error") if there are errors. It also fixes column data types, if possible. 
+
+```{r}
+llm_response <- json_expand(llm_power, "answer") |>
+  dplyr::select(text, apriori:es_metric)
+```
+
+```{r}
+#| echo: false
+
+knitr::kable(llm_response)
 ```
 
 ### Rate Limiting
@@ -261,21 +393,6 @@ llm_max_calls(30)
 ```
 
 If you hit your rate limit, the `llm()` function will add a short delay between calls, so don't worry if you notice the query speed slowing down after the first 30 calls. 
-
-
-## Batch Processing
-
-The functions `pdf2grobid()` and `read_grobid()` also work on a folder of files, returning a list of XML file paths or paper objects, respectively. The functions `search_text()`, `expand_text()` and `llm()` also work on a list of paper objects.
-
-```{r}
-grobid_dir <- demodir()
-
-papers <- read_grobid(grobid_dir)
-
-hypotheses <- search_text(papers, "hypothesi", 
-                          section = "intro", 
-                          return = "paragraph")
-```
 
 
 ## Modules

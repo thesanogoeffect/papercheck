@@ -71,11 +71,11 @@ dplyr::filter(rw$summary, rw_Retraction > 0 | rw_Correction > 0)
 
 There are more possible modules than our team can create, and we welcome anyone who wants to collaborate with us on building and validating new modules. In addition to the modules demonstrated in the four blog posts, future modules could be developed to check if open data and materials are Findable, Accessible, Interoperable, and Reusable (FAIR) [@wilkinson_fair], to perform checks on specific types of articles (e.g., meta-analyses), check journal-specific reporting guidelines, or perform checks on the references. We see great potential for new modules; the only limitation is your own creativity and your engineering skills.
 
-We are excited to continue developing Papercheck in close collaboration with the broader scientific community and welcome feedback, suggestions, and contributions. You can explore Papercheck on GitHub: <https://scienceverse.github.io/papercheck/>. If you want to contribute to new papercheck modules, validate existing modules in your own scientific discipline, or explore the use of Papercheck for metascientific projects, reach out to Lisa DeBruine or Daniel Lakens.
+We are excited to continue developing Papercheck in close collaboration with the broader scientific community and welcome feedback, suggestions, and contributions. You can explore Papercheck on GitHub: <https://scienceverse.github.io/papercheck/>. If you want to contribute to new papercheck modules, validate existing modules in your own scientific discipline, or explore the use of Papercheck for metascientific projects, reach out to [Lisa DeBruine](mailto:lisa.debruine@glasgow.ac.uk?subject=Papercheck) or [Daniel Lakens](mailto:d.lakens@tue.nl?subject=Papercheck).
 
 ## Papercheck Team
 
-Papercheck is developed by a collaborative team of researchers, consisting of (from left to right in the picture below) Lisa DeBruine (developer and maintainer) and Daniël Lakens (developer), René Bekkers (collaborator and PI of Transparency Check), Cristian Mesquida (postdoctoral researcher), and Max Littel and Jakub Werner (research assistants).
+Papercheck is developed by a collaborative team of researchers, consisting of (from left to right in the picture below) [Lisa DeBruine](https://debruine.github.io) (developer and maintainer) and [Daniël Lakens](https://sites.google.com/site/lakens2/Home) (developer), [René Bekkers](https://research.vu.nl/en/persons/rene-bekkers) (collaborator and PI of Transparency Check), [Cristian Mesquida](https://ssreplicationcentre.com/author/cristian-mesquida/) (postdoctoral researcher), and Max Littel and Jakub Werner (research assistants).
 
 ![](papercheck_team.png)
 

@@ -35,7 +35,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">papercheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9044</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9045</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -236,10 +236,14 @@ including an id to link them to citations (bib_id), the DOI if available
 <code class="sourceCode R"><span><span class="va">ref</span> <span class="op">&lt;-</span> <span class="va">paper</span><span class="op">$</span><span class="va">references</span></span>
 <span></span>
 <span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ref</span>, <span class="va">bib_id</span> <span class="op">==</span> <span class="st">"b5"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt;   bib_id                        doi</span></span>
-<span><span class="co">#&gt; 1     b5 10.1016/j.jcps.2011.05.001</span></span>
+<pre><code><span><span class="co">#&gt;   bib_id</span></span>
+<span><span class="co">#&gt; 1     b5</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                     ref</span></span>
-<span><span class="co">#&gt; 1 Berns GS, Moore SE (2012). “A neural predictor of cultural popularity.” _Journal of Consumer Psychology_, *22*, 154-160. doi:10.1016/j.jcps.2011.05.001 &lt;https://doi.org/10.1016/j.jcps.2011.05.001&gt;.</span></span></code></pre>
+<span><span class="co">#&gt; 1 Berns GS, Moore SE (2012). “A neural predictor of cultural popularity.” _Journal of Consumer Psychology_, *22*, 154-160. doi:10.1016/j.jcps.2011.05.001 &lt;https://doi.org/10.1016/j.jcps.2011.05.001&gt;.</span></span>
+<span><span class="co">#&gt;                          doi bibtype                                     title</span></span>
+<span><span class="co">#&gt; 1 10.1016/j.jcps.2011.05.001 Article A neural predictor of cultural popularity</span></span>
+<span><span class="co">#&gt;                          journal year              authors</span></span>
+<span><span class="co">#&gt; 1 Journal of Consumer Psychology 2012 G S Berns, S E Moore</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="citations">Citations<a class="anchor" aria-label="anchor" href="#citations"></a>

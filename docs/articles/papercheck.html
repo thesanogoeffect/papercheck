@@ -35,7 +35,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">papercheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9044</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9045</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,8 +63,8 @@
 
 
 
-
-<div class="row">
+<link href="papercheck_files/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+<script src="papercheck_files/tabwid-1.1.3/tabwid.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>papercheck</h1>
             
@@ -86,7 +86,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/papercheck" class="external-link">papercheck</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">*******************************************</span></span></span>
+<span><span class="co">#&gt; *******************************************</span></span>
 <span><span class="co">#&gt; ✅ Welcome to PaperCheck</span></span>
 <span><span class="co">#&gt; For support and examples visit:</span></span>
 <span><span class="co">#&gt; https://scienceverse.github.io/papercheck/</span></span>
@@ -94,7 +94,7 @@
 <span><span class="co">#&gt; ⚠️ This is alpha software; please check any</span></span>
 <span><span class="co">#&gt; results. False positives and negatives will</span></span>
 <span><span class="co">#&gt; occur at unknown rates.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">*******************************************</span></span></span></code></pre>
+<span><span class="co">#&gt; *******************************************</span></span></code></pre>
 <p>You can launch an interactive shiny app version of the code below
 with:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -158,6 +158,216 @@ or text/docx file with <code><a href="../reference/read_text.html">read_text()</
 <span>                        package <span class="op">=</span> <span class="st">"papercheck"</span><span class="op">)</span></span>
 <span><span class="va">paper_from_doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_text.html">read_text</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
+</h3>
+<p>The functions <code><a href="../reference/pdf2grobid.html">pdf2grobid()</a></code> and
+<code><a href="../reference/read_grobid.html">read_grobid()</a></code> also work on a folder of files, returning a
+list of XML file paths or paper objects, respectively. The functions
+<code><a href="../reference/search_text.html">search_text()</a></code>, <code><a href="../reference/expand_text.html">expand_text()</a></code> and
+<code><a href="../reference/llm.html">llm()</a></code> also work on a list of paper objects.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">grobid_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/demodir.html">demodir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_grobid.html">read_grobid</a></span><span class="op">(</span><span class="va">grobid_dir</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hypotheses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">papers</span>, <span class="st">"hypothesi"</span>, </span>
+<span>                          section <span class="op">=</span> <span class="st">"intro"</span>, </span>
+<span>                          return <span class="op">=</span> <span class="st">"paragraph"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="paper-components">Paper Components<a class="anchor" aria-label="anchor" href="#paper-components"></a>
+</h2>
+<p>Paper objects contain a lot of structured information, including
+info, references, and citations.</p>
+<div class="section level3">
+<h3 id="info">Info<a class="anchor" aria-label="anchor" href="#info"></a>
+</h3>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">info</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; $filename</span></span>
+<span><span class="co">#&gt; [1] "/private/var/folders/t6/7x6md_5s2j5bfb324s784yzw0000gn/T/Rtmp4omX34/temp_libpath1bb7aeed92d/papercheck/extdata/to_err_is_human.xml"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $title</span></span>
+<span><span class="co">#&gt; [1] "To Err is Human: An Empirical Investigation"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $description</span></span>
+<span><span class="co">#&gt; [1] "This paper demonstrates some good and poor practices for use with the {papercheck} R package and Shiny app. All data are simulated. The paper shows examples of (1) open and closed OSF links; (2) citation of retracted papers; (3) missing/mismatched citations and references; (4) imprecise reporting of p-values; and (5) use of \"marginally significant\" to describe non-significant findings."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $keywords</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
+<p>References are provided in a tabular format.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">references</span></span></code></pre></div>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="1%">
+<col width="57%">
+<col width="6%">
+<col width="2%">
+<col width="18%">
+<col width="5%">
+<col width="1%">
+<col width="6%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">bib_id</th>
+<th align="left">ref</th>
+<th align="left">doi</th>
+<th align="left">bibtype</th>
+<th align="left">title</th>
+<th align="left">journal</th>
+<th align="left">year</th>
+<th align="left">authors</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">b0</td>
+<td align="left">Gino F, Wiltermuth SS (2014). “Retracted: Evil Genius?
+How Dishonesty Can Lead to Greater Creativity.” <em>Psychological
+Science</em>, <em>25</em>(4), 973-981. <a href="doi:10.1177/0956797614520714" class="uri">doi:10.1177/0956797614520714</a> <a href="https://doi.org/10.1177/0956797614520714" class="external-link uri">https://doi.org/10.1177/0956797614520714</a>.</td>
+<td align="left">10.1177/0956797614520714</td>
+<td align="left">Article</td>
+<td align="left">Retracted: Evil Genius? How Dishonesty Can Lead to
+Greater Creativity</td>
+<td align="left">Psychological Science</td>
+<td align="left">2014</td>
+<td align="left">F Gino, S S Wiltermuth</td>
+</tr>
+<tr class="even">
+<td align="left">b1</td>
+<td align="left">Smith F (2021). “Human error is a symptom of a poor
+design.” <em>Journal of Journals</em>, <em>0</em>(0), 0. <a href="doi:10.0000/0123456789" class="uri">doi:10.0000/0123456789</a> <a href="https://doi.org/10.0000/0123456789" class="external-link uri">https://doi.org/10.0000/0123456789</a>.</td>
+<td align="left">10.0000/0123456789</td>
+<td align="left">Article</td>
+<td align="left">Human error is a symptom of a poor design</td>
+<td align="left">Journal of Journals</td>
+<td align="left">2021</td>
+<td align="left">F Smith</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="citations">Citations<a class="anchor" aria-label="anchor" href="#citations"></a>
+</h3>
+<p>Citations are also provided in a tabular format, with a bib_id to
+match the references.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">citations</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="7%">
+<col width="92%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">bib_id</th>
+<th align="left">text</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">b0</td>
+<td align="left">Although intentional dishonestly might be a successful
+way to boost creativity (Gino &amp; Wiltermuth, 2014), it is safe to say
+most mistakes researchers make are unintentional.</td>
+</tr>
+<tr class="even">
+<td align="left">(Smithy, 2020)</td>
+<td align="left">From a human factors perspective, human error is a
+symptom of a poor design (Smithy, 2020).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="batch">Batch<a class="anchor" aria-label="anchor" href="#batch"></a>
+</h3>
+<p>There are functions to combine the infomation from a list of papers,
+like the <code>psychsci</code> built-in dataset of 250 open access
+papers from Psychological Science.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/info_table.html">info_table</a></span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"title"</span>, <span class="st">"doi"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
+<span><span class="co">#&gt;   id               title                                                   doi  </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0956797613520608 Continuous Theta-Burst Stimulation Demonstrates a Caus… 10.1…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0956797614522816 Beyond Gist: Strategic and Incremental Information Acc… 10.1…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0956797614527830 Serotonin and Social Norms: Tryptophan Depletion Impai… 10.1…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0956797614557697 Action-Specific Disruption of Perceptual Confidence     10.1…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0956797614560771 Emotional Vocalizations Are Recognized Across Cultures… 10.1…</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/concat_tables.html">concat_tables</a></span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="st">"references"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">doi</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;   bib_id</span></span>
+<span><span class="co">#&gt; 1    b40</span></span>
+<span><span class="co">#&gt; 2     b0</span></span>
+<span><span class="co">#&gt; 3     b1</span></span>
+<span><span class="co">#&gt; 4     b2</span></span>
+<span><span class="co">#&gt; 5     b3</span></span>
+<span><span class="co">#&gt; 6     b4</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                   ref</span></span>
+<span><span class="co">#&gt; 1                                             Zylberberg A, Barttfeld P, Sigman M (2012). “The construction of confidence in a perceptual decision.” _Frontiers in Integrative Neuroscience_, *6*. doi:10.3389/fnint.2012.00079/full &lt;https://doi.org/10.3389/fnint.2012.00079/full&gt;.</span></span>
+<span><span class="co">#&gt; 2                                                        Ekman P (1994). “Strong evidence for universals in facial expressions: A reply to Russell's mistaken critique.” _Psychological Bulletin_, *115*, 268-287. doi:10.1037/0033-2909.115 &lt;https://doi.org/10.1037/0033-2909.115&gt;.</span></span>
+<span><span class="co">#&gt; 3                                        Gendron M, Roberson D, Van Der Vyver JM, Barrett LF (2014). “Cultural relativity in perceiving emotion from vocalizations.” _Psychological Science_, *25*, 911-920. doi:10.1177/0956797613517239 &lt;https://doi.org/10.1177/0956797613517239&gt;.</span></span>
+<span><span class="co">#&gt; 4                             Russell JA (1994). “Is there universal recognition of emotion from facial expression? A review of the cross-cultural studies.” _Psychological Bulletin_, *115*, 102-141. doi:10.1037/0033-2909.115.1.102 &lt;https://doi.org/10.1037/0033-2909.115.1.102&gt;.</span></span>
+<span><span class="co">#&gt; 5                      Sauter DA, Eisner F, Calder AJ, Scott SK (2010). “Perceptual cues in non-verbal vocal expressions of emotion.” _The Quarterly Journal of Experimental Psychology_, *63*, 2251-2272. doi:10.1080/17470211003721642 &lt;https://doi.org/10.1080/17470211003721642&gt;.</span></span>
+<span><span class="co">#&gt; 6 Sauter DA, Eisner F, Ekman P, Scott SK (2010). “Crosscultural recognition of basic emotions through nonverbal emotional vocalizations.” _Proceedings of the National Academy of Sciences_, *107*, 2408-2412. doi:10.1073/pnas.0908239106 &lt;https://doi.org/10.1073/pnas.0908239106&gt;.</span></span>
+<span><span class="co">#&gt;                             doi bibtype</span></span>
+<span><span class="co">#&gt; 1 10.3389/fnint.2012.00079/full Article</span></span>
+<span><span class="co">#&gt; 2         10.1037/0033-2909.115 Article</span></span>
+<span><span class="co">#&gt; 3      10.1177/0956797613517239 Article</span></span>
+<span><span class="co">#&gt; 4   10.1037/0033-2909.115.1.102 Article</span></span>
+<span><span class="co">#&gt; 5     10.1080/17470211003721642 Article</span></span>
+<span><span class="co">#&gt; 6       10.1073/pnas.0908239106 Article</span></span>
+<span><span class="co">#&gt;                                                                                                      title</span></span>
+<span><span class="co">#&gt; 1                                                  The construction of confidence in a perceptual decision</span></span>
+<span><span class="co">#&gt; 2             Strong evidence for universals in facial expressions: A reply to Russell's mistaken critique</span></span>
+<span><span class="co">#&gt; 3                                             Cultural relativity in perceiving emotion from vocalizations</span></span>
+<span><span class="co">#&gt; 4 Is there universal recognition of emotion from facial expression? A review of the cross-cultural studies</span></span>
+<span><span class="co">#&gt; 5                                               Perceptual cues in non-verbal vocal expressions of emotion</span></span>
+<span><span class="co">#&gt; 6                    Crosscultural recognition of basic emotions through nonverbal emotional vocalizations</span></span>
+<span><span class="co">#&gt;                                            journal year</span></span>
+<span><span class="co">#&gt; 1            Frontiers in Integrative Neuroscience 2012</span></span>
+<span><span class="co">#&gt; 2                           Psychological Bulletin 1994</span></span>
+<span><span class="co">#&gt; 3                            Psychological Science 2014</span></span>
+<span><span class="co">#&gt; 4                           Psychological Bulletin 1994</span></span>
+<span><span class="co">#&gt; 5 The Quarterly Journal of Experimental Psychology 2010</span></span>
+<span><span class="co">#&gt; 6  Proceedings of the National Academy of Sciences 2010</span></span>
+<span><span class="co">#&gt;                                                 authors               id</span></span>
+<span><span class="co">#&gt; 1                   A Zylberberg, P Barttfeld, M Sigman 0956797614557697</span></span>
+<span><span class="co">#&gt; 2                                               P Ekman 0956797614560771</span></span>
+<span><span class="co">#&gt; 3 M Gendron, D Roberson, J M Van Der Vyver, L F Barrett 0956797614560771</span></span>
+<span><span class="co">#&gt; 4                                           J A Russell 0956797614560771</span></span>
+<span><span class="co">#&gt; 5           D A Sauter, F Eisner, A J Calder, S K Scott 0956797614560771</span></span>
+<span><span class="co">#&gt; 6              D A Sauter, F Eisner, P Ekman, S K Scott 0956797614560771</span></span></code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/concat_tables.html">concat_tables</a></span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">40</span><span class="op">]</span>, <span class="st">"citations"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"replicat"</span>, <span class="va">text</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">text</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;                 id</span></span>
+<span><span class="co">#&gt; 1 0956797614560771</span></span>
+<span><span class="co">#&gt; 2 0956797616665351</span></span>
+<span><span class="co">#&gt; 3 0956797617702699</span></span>
+<span><span class="co">#&gt; 4 0956797617705667</span></span>
+<span><span class="co">#&gt; 5 0956797617716922</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                                              text</span></span>
+<span><span class="co">#&gt; 1                                                                 1 We reanalyzed the data from the 29 Himba participants in our original study who had heard British vocalizations, the part of our study that Gendron et al. (2014) replicated.</span></span>
+<span><span class="co">#&gt; 2                                                At a group level, therefore, the perceptual data replicated previous findings (Freeman et al., 2010;Hürlimann et al., 2002;Sotiropoulos et al., 2014;Stocker &amp; Simoncelli, 2006;Thompson, 1982).</span></span>
+<span><span class="co">#&gt; 3                                                                       A study by Papesh (2015) is particularly relevant: She failed to replicate the findings of Glenberg and Kaschak (2002)-a key study that we have highlighted here as well.</span></span>
+<span><span class="co">#&gt; 4                                                                                                                               This replicates the main finding of Beck et al. (2012), who also used displays with both relevant colors present.</span></span>
+<span><span class="co">#&gt; 5 Though we await replication of our findings, we see the current data as promising initial evidence for the coevolved proximal mechanisms through which oxytocin facilitates potentially life-enhancing connections (Holt-Lunstad et al., 2010).</span></span>
+<span><span class="co">#&gt;   n</span></span>
+<span><span class="co">#&gt; 1 1</span></span>
+<span><span class="co">#&gt; 2 5</span></span>
+<span><span class="co">#&gt; 3 2</span></span>
+<span><span class="co">#&gt; 4 1</span></span>
+<span><span class="co">#&gt; 5 1</span></span></code></pre>
+</div>
 </div>
 <div class="section level2">
 <h2 id="search-text">Search Text<a class="anchor" aria-label="anchor" href="#search-text"></a>
@@ -168,7 +378,7 @@ the function <code><a href="../reference/search_text.html">search_text()</a></co
 table of each sentence, with the section type, header, div, paragraph
 and sentence numbers, and file name. (The section type is a best guess
 from the headers, so may not always be accurate.)</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -252,7 +462,7 @@ researchers feel the app is useful.</td>
 <code>pattern</code> argument. The pattern is a regex string by default;
 set <code>fixed = TRUE</code> if you want to find exact text
 matches.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">paper</span>, pattern <span class="op">=</span> <span class="st">"papercheck"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -302,7 +512,7 @@ to improve best practices.</td>
 </h3>
 <p>Set <code>section</code> to a vector of the sections to search
 in.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"papercheck"</span>, </span>
 <span>                    section <span class="op">=</span> <span class="st">"abstract"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -341,7 +551,7 @@ for use with the {papercheck} R package and Shiny app.</td>
 </h3>
 <p>Set <code>return</code> to one of “sentence”, “paragraph”, “section”,
 or “match” to control what gets returned.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"papercheck"</span>, </span>
 <span>                    section <span class="op">=</span> <span class="st">"intro"</span>, </span>
 <span>                    return <span class="op">=</span> <span class="st">"paragraph"</span><span class="op">)</span></span></code></pre></div>
@@ -389,7 +599,7 @@ setting <code>return = "match"</code>. The extra <code>...</code>
 arguments in <code><a href="../reference/search_text.html">search_text()</a></code> are passed to
 <code><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep()</a></code>, so <code>perl = TRUE</code> allows you to use more
 complex regex, like below.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"[a-zA-Z]\\S*\\s*(=|&lt;)\\s*[0-9\\.,-]*\\d"</span></span>
 <span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">paper</span>, <span class="va">pattern</span>, return <span class="op">=</span> <span class="st">"match"</span>, perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -483,7 +693,7 @@ complex regex, like below.</p>
 </h3>
 <p>You can expand the text returned by <code><a href="../reference/search_text.html">search_text()</a></code> or a
 module with <code><a href="../reference/expand_text.html">expand_text()</a></code>.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">marginal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"marginal"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/expand_text.html">expand_text</a></span><span class="op">(</span><span class="va">paper</span>, plus <span class="op">=</span> <span class="fl">1</span>, minus <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
@@ -508,8 +718,8 @@ module with <code><a href="../reference/expand_text.html">expand_text()</a></cod
 it out, add it to the .Renviron file in the following format (you can
 use <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> to access the .Renviron
 file).</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="va">GROQ_GPT_KEY</span><span class="op">=</span><span class="st">"sk-proj-abcdefghijklmnopqrs0123456789ABCDEFGHIJKLMNOPQRS"</span></span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="va">GROQ_GPT_KEY</span><span class="op">=</span><span class="st">"sk-proj-abcdefghijklmnopqrs0123456789ABCDEFGHIJKLMNOPQRS"</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># useful if you aren't sure where this file is</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You can get or set the default LLM model with
@@ -625,42 +835,160 @@ models using <code><a href="../reference/llm_model_list.html">llm_model_list()</
 <div class="section level3">
 <h3 id="llm-queries">LLM Queries<a class="anchor" aria-label="anchor" href="#llm-queries"></a>
 </h3>
-<p>You can ask an LLM to process text. Use <code><a href="../reference/search_text.html">search_text()</a></code>
-first to narrow down the text into what you want to query. Below, we
-returned the first two papers’ introduction sections, and returned the
-full section. Then we asked an LLM “What is the hypothesis of this
-study?”.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hypotheses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">papers</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, </span>
-<span>                          section <span class="op">=</span> <span class="st">"intro"</span>, </span>
-<span>                          return <span class="op">=</span> <span class="st">"section"</span><span class="op">)</span></span>
-<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="st">"What is the hypothesis of this study? Answer as briefly as possible."</span></span>
-<span><span class="va">llm_hypo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/llm.html">llm</a></span><span class="op">(</span><span class="va">hypotheses</span>, <span class="va">query</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="6%">
-<col width="93%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">id</th>
-<th align="left">answer</th>
+<p>You can query the extracted text of papers with LLMs using <a href="https://console.groq.com/docs/" class="external-link">groq</a>. See <code><a href="../reference/llm.html">?llm</a></code>
+for details of how to get and set up your API key, choose an LLM, and
+adjust settings.</p>
+<p>Use <code><a href="../reference/search_text.html">search_text()</a></code> first to narrow down the text into
+what you want to query. Below, we limited search to the first ten
+papers’ method sections, and returned sentences that contains the word
+“power” and at least one number. Then we asked an LLM to determine if
+this is an a priori power analysis, and if so, to return some relevant
+values in a JSON-structured format.</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">power</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co"># sentences containing the word power</span></span>
+<span>  <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="st">"power"</span>, section <span class="op">=</span> <span class="st">"method"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co"># and containing at least one number</span></span>
+<span>  <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="st">"[0-9]"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># ask a specific question with specific response format</span></span>
+<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="st">'Does this sentence report an a priori power analysis? If so, return the test, sample size, critical alpha criterion, power level, effect size and effect size metric plus any other relevant parameters, in JSON format like:</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">{</span></span>
+<span><span class="st">  "apriori": true, </span></span>
+<span><span class="st">  "test": "paired samples t-test", </span></span>
+<span><span class="st">  "sample": 20, </span></span>
+<span><span class="st">  "alpha": 0.05, </span></span>
+<span><span class="st">  "power": 0.8, </span></span>
+<span><span class="st">  "es": 0.4, </span></span>
+<span><span class="st">  "es_metric": "cohen\'s D"</span></span>
+<span><span class="st">}</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">If not, return {"apriori": false}</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">Answer only in valid JSON format, starting with { and ending with }.'</span></span>
+<span></span>
+<span><span class="va">llm_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/llm.html">llm</a></span><span class="op">(</span><span class="va">power</span>, <span class="va">query</span>, seed <span class="op">=</span> <span class="fl">8675309</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="expand-json">Expand JSON<a class="anchor" aria-label="anchor" href="#expand-json"></a>
+</h3>
+<p>It is useful to ask an LLM to return data in JSON structured format,
+but can be frustrating to extract the data, especially where the LLM
+makes syntax mistakes. The function <code><a href="../reference/json_expand.html">json_expand()</a></code> tries to
+expand a column with a JSON-formatted response into columns and deals
+with it gracefully (sets an ‘error’ column to “parsing error”) if there
+are errors. It also fixes column data types, if possible.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">llm_response</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/json_expand.html">json_expand</a></span><span class="op">(</span><span class="va">llm_power</span>, <span class="st">"answer"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">text</span>, <span class="va">apriori</span><span class="op">:</span><span class="va">es_metric</span><span class="op">)</span></span></code></pre></div>
+<div class="tabwid">
+<style>.cl-9cf2b182{}.cl-9cefe880{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9cf10580{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9cf1058a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9cf11142{width:5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf1114c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf1114d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf1114e{width:5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf11156{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf11157{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf11158{width:5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf11159{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9cf11160{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table data-quarto-disable-processing="true" class="table cl-9cf2b182">
+<thead><tr style="overflow-wrap:break-word;">
+<th class="cl-9cf11142"><p class="cl-9cf10580"><span class="cl-9cefe880">text</span></p></th>
+<th class="cl-9cf1114c"><p class="cl-9cf1058a"><span class="cl-9cefe880">apriori</span></p></th>
+<th class="cl-9cf1114d"><p class="cl-9cf10580"><span class="cl-9cefe880">test</span></p></th>
+<th class="cl-9cf1114c"><p class="cl-9cf1058a"><span class="cl-9cefe880">sample</span></p></th>
+<th class="cl-9cf1114c"><p class="cl-9cf1058a"><span class="cl-9cefe880">alpha</span></p></th>
+<th class="cl-9cf1114c"><p class="cl-9cf1058a"><span class="cl-9cefe880">power</span></p></th>
+<th class="cl-9cf1114d"><p class="cl-9cf10580"><span class="cl-9cefe880">es</span></p></th>
+<th class="cl-9cf1114d"><p class="cl-9cf10580"><span class="cl-9cefe880">es_metric</span></p></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">eyecolor.xml</td>
-<td align="left">The hypothesis of this study is that humans exhibit
-positive sexual imprinting, where individuals choose partners with
-physical characteristics similar to those of their opposite-sex
-parent.</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">Sample size was calculated with an a priori power analysis, using the effect sizes reported by Küpper et al. (2014), who used identical procedures, materials, and dependent measures.</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
 </tr>
-<tr class="even">
-<td align="left">incest.xml</td>
-<td align="left">The hypothesis is that moral opposition to third-party
-sibling incest is greater among individuals with other-sex siblings than
-among individuals with same-sex siblings.</td>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">We determined that a minimum sample size of 7 per group would be necessary for 95% power to detect an effect.</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">7</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.95</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">For the first part of the task, 11 static visual images, one from each of the scenes in the film were presented once each on a black background for 2 s using Power-Point.</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">FALSE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">A sample size of 26 per group was required to ensure 80% power to detect this difference at the 5% significance level.</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880">two-sample t-test</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">26</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.050</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.80</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">A sample size of 18 per condition was required in order to ensure an 80% power to detect this difference at the 5% significance level.</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880">t-test</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">18</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.050</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.80</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">The 13,500 selected loan requests conservatively achieved a power of .98 for an effect size of .07 at an alpha level of .05.</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">13,500</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.050</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.98</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880">0.07</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">On the basis of simulations over a range of expected effect sizes for contrasts of fMRI activity, we estimated that a sample size of 24 would provide .80 power at a conservative brainwide alpha threshold of .002 (although such thresholds ideally should be relaxed for detecting activity in regions where an effect is predicted).</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880">unknown</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">24</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.002</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.80</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880">unknown</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880">unknown</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf1114e"><p class="cl-9cf10580"><span class="cl-9cefe880">Stimulus sample size was determined via power analysis of the sole existing similar study, which used neural activity to predict Internet downloads of music (Berns &amp; Moore, 2012).</span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11156"><p class="cl-9cf1058a"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11157"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-9cf11158"><p class="cl-9cf10580"><span class="cl-9cefe880">The effect size from that study implied that a sample size of 72 loan requests would be required to achieve .80 power at an alpha level of .05.</span></p></td>
+<td class="cl-9cf11159"><p class="cl-9cf1058a"><span class="cl-9cefe880">TRUE</span></p></td>
+<td class="cl-9cf11160"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11159"><p class="cl-9cf1058a"><span class="cl-9cefe880">72</span></p></td>
+<td class="cl-9cf11159"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.050</span></p></td>
+<td class="cl-9cf11159"><p class="cl-9cf1058a"><span class="cl-9cefe880">0.80</span></p></td>
+<td class="cl-9cf11160"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
+<td class="cl-9cf11160"><p class="cl-9cf10580"><span class="cl-9cefe880"></span></p></td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div class="section level3">
 <h3 id="rate-limiting">Rate Limiting<a class="anchor" aria-label="anchor" href="#rate-limiting"></a>
@@ -669,29 +997,12 @@ among individuals with same-sex siblings.</td>
 each row in a data frame from <code><a href="../reference/search_text.html">search_text()</a></code>. Free GROQ
 accounts are rate limited, so we set the default limits to 30 queries,
 but you can change this:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/llm_max_calls.html">llm_max_calls</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span></code></pre></div>
 <p>If you hit your rate limit, the <code><a href="../reference/llm.html">llm()</a></code> function will add
 a short delay between calls, so don’t worry if you notice the query
 speed slowing down after the first 30 calls.</p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
-</h2>
-<p>The functions <code><a href="../reference/pdf2grobid.html">pdf2grobid()</a></code> and
-<code><a href="../reference/read_grobid.html">read_grobid()</a></code> also work on a folder of files, returning a
-list of XML file paths or paper objects, respectively. The functions
-<code><a href="../reference/search_text.html">search_text()</a></code>, <code><a href="../reference/expand_text.html">expand_text()</a></code> and
-<code><a href="../reference/llm.html">llm()</a></code> also work on a list of paper objects.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">grobid_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/demodir.html">demodir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_grobid.html">read_grobid</a></span><span class="op">(</span><span class="va">grobid_dir</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">hypotheses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_text.html">search_text</a></span><span class="op">(</span><span class="va">papers</span>, <span class="st">"hypothesi"</span>, </span>
-<span>                          section <span class="op">=</span> <span class="st">"intro"</span>, </span>
-<span>                          return <span class="op">=</span> <span class="st">"paragraph"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="modules">Modules<a class="anchor" aria-label="anchor" href="#modules"></a>
@@ -703,7 +1014,7 @@ will share more modules.</p>
 <h3 id="module-list">Module List<a class="anchor" aria-label="anchor" href="#module-list"></a>
 </h3>
 <p>You can see the list of built-in modules with the function below.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/module_list.html">module_list</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;  * all_p_values: List all p-values in the text, returning the matched text (e.g., 'p = 0.04')</span></span>
 <span><span class="co">#&gt; and document location in a table.</span></span>
@@ -721,7 +1032,7 @@ will share more modules.</p>
 </h3>
 <p>To run a built-in module on a paper, you can reference it by
 name.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"all_p_values"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -779,7 +1090,7 @@ details.</p>
 </h2>
 <p>You can generate a report from any set of modules. The default set is
 <code>c("exact_p", "marginal", "effect_size", "osf_check", "retractionwatch", "ref_consistency")</code></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">paper</span>, output_format <span class="op">=</span> <span class="st">"qmd"</span><span class="op">)</span></span></code></pre></div>
 <p>See the <a href="report-example.html">example report</a>.</p>
 </div>

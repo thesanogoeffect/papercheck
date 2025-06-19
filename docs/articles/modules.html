@@ -35,7 +35,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">papercheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9044</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9045</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -783,7 +783,7 @@ exist. This requires an internet connection to check the status of the
 link.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">osf_check</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"osf_check"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Starting OSF retrieval for 1, files...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting OSF retrieval for 1 files...</span></span></code></pre>
 <pre><code><span><span class="co">#&gt; * Retrieving info from k2dbf...</span></span></code></pre>
 <pre><code><span><span class="co">#&gt; ...OSF retrieval complete!</span></span></code></pre>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
@@ -836,16 +836,36 @@ referenced.</p>
 <code class="sourceCode R"><span><span class="va">ref_consistency</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_consistency"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ref_consistency</span><span class="op">$</span><span class="va">table</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt;   bib_id  doi</span></span>
-<span><span class="co">#&gt; 1    b16 &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2    b17 &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3     b3 &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4    b31 &lt;NA&gt;</span></span>
+<pre><code><span><span class="co">#&gt;   bib_id</span></span>
+<span><span class="co">#&gt; 1    b16</span></span>
+<span><span class="co">#&gt; 2    b17</span></span>
+<span><span class="co">#&gt; 3     b3</span></span>
+<span><span class="co">#&gt; 4    b31</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                               ref</span></span>
 <span><span class="co">#&gt; 1                                                       Jones BC, Hahn AC, Fisher CI, Wang H, Kandrik M, Tybur JM, Debruine LM (2018). “Hormonal correlates of pathogen disgust: Testing the compensatory prophylaxis hypothesis.” _Evolution and Human Behavior_, *39*, 166-169.</span></span>
 <span><span class="co">#&gt; 2 Jones BC, Hahn AC, Fisher CI, Wang H, Kandrik M, Tybur JM, Debruine LM (2018b). “Reply to Fleischman and Fessler's (2018) comment on "Hormonal correlates of pathogen disgust: Testing the compensatory prophylaxis hypothesis.” _Evolution and Human Behavior_, *39*, 470-471.</span></span>
 <span><span class="co">#&gt; 3                                                                                                                                                           Curtis VA (2014). “Infection-avoidance behaviour in humans and other animals.” _Trends in Immunology_, *35*, 457-464.</span></span>
 <span><span class="co">#&gt; 4       Tybur JM, Inbar Y, Aarøe L, Barclay P, Barlow FK, De Barra M, Žeželj .., I (2016). “Parasite stress and pathogen avoidance relate to distinct dimensions of political ideology across 30 nations.” _Proceedings of the National Academy of Sciences_, *113*, 12408-12413.</span></span>
+<span><span class="co">#&gt;    doi bibtype</span></span>
+<span><span class="co">#&gt; 1 &lt;NA&gt; Article</span></span>
+<span><span class="co">#&gt; 2 &lt;NA&gt; Article</span></span>
+<span><span class="co">#&gt; 3 &lt;NA&gt; Article</span></span>
+<span><span class="co">#&gt; 4 &lt;NA&gt; Article</span></span>
+<span><span class="co">#&gt;                                                                                                                                           title</span></span>
+<span><span class="co">#&gt; 1                                                      Hormonal correlates of pathogen disgust: Testing the compensatory prophylaxis hypothesis</span></span>
+<span><span class="co">#&gt; 2 Reply to Fleischman and Fessler's (2018) comment on "Hormonal correlates of pathogen disgust: Testing the compensatory prophylaxis hypothesis</span></span>
+<span><span class="co">#&gt; 3                                                                                     Infection-avoidance behaviour in humans and other animals</span></span>
+<span><span class="co">#&gt; 4                                  Parasite stress and pathogen avoidance relate to distinct dimensions of political ideology across 30 nations</span></span>
+<span><span class="co">#&gt;                                           journal  year</span></span>
+<span><span class="co">#&gt; 1                    Evolution and Human Behavior  2018</span></span>
+<span><span class="co">#&gt; 2                    Evolution and Human Behavior 2018b</span></span>
+<span><span class="co">#&gt; 3                            Trends in Immunology  2014</span></span>
+<span><span class="co">#&gt; 4 Proceedings of the National Academy of Sciences  2016</span></span>
+<span><span class="co">#&gt;                                                                         authors</span></span>
+<span><span class="co">#&gt; 1   B C Jones, A C Hahn, C I Fisher, H Wang, M Kandrik, J M Tybur, L M Debruine</span></span>
+<span><span class="co">#&gt; 2   B C Jones, A C Hahn, C I Fisher, H Wang, M Kandrik, J M Tybur, L M Debruine</span></span>
+<span><span class="co">#&gt; 3                                                                    V A Curtis</span></span>
+<span><span class="co">#&gt; 4 J M Tybur, Y Inbar, L Aarøe, P Barclay, F K Barlow, M De Barra, . . Žeželj, I</span></span>
 <span><span class="co">#&gt;                 id  missing</span></span>
 <span><span class="co">#&gt; 1 0956797620955209 citation</span></span>
 <span><span class="co">#&gt; 2 0956797620955209 citation</span></span>
@@ -869,8 +889,9 @@ regularly (last 2025-02-28).</p>
 <code class="sourceCode R"><span><span class="va">rw</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"retractionwatch"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">rw</span><span class="op">$</span><span class="va">table</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] bib_id          doi             ref             id             </span></span>
-<span><span class="co">#&gt; [5] retractionwatch</span></span>
+<pre><code><span><span class="co">#&gt;  [1] bib_id          ref             doi             bibtype        </span></span>
+<span><span class="co">#&gt;  [5] title           journal         year            authors        </span></span>
+<span><span class="co">#&gt;  [9] id              retractionwatch</span></span>
 <span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre>
 <p>In the full PsychSci set, we find three papers in the RetractionWatch
 database cited, one with a retraction and two with corrections.</p>
@@ -878,13 +899,13 @@ database cited, one with a retraction and two with corrections.</p>
 <code class="sourceCode R"><span><span class="va">rw_ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">psychsci</span>, <span class="st">"retractionwatch"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">rw_ps</span><span class="op">$</span><span class="va">table</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt;   bib_id                        doi</span></span>
-<span><span class="co">#&gt; 1    b15   10.1177/0956797612470827</span></span>
-<span><span class="co">#&gt; 2    b25 10.1186/gb-2013-14-10-r115</span></span>
-<span><span class="co">#&gt; 3    b36 10.1038/s41562-023-01749-9</span></span>
-<span><span class="co">#&gt; 4    b25 10.1186/gb-2013-14-10-r115</span></span>
-<span><span class="co">#&gt; 5    b25 10.1186/gb-2013-14-10-r115</span></span>
-<span><span class="co">#&gt; 6    b25 10.1186/gb-2013-14-10-r115</span></span>
+<pre><code><span><span class="co">#&gt;   bib_id</span></span>
+<span><span class="co">#&gt; 1    b15</span></span>
+<span><span class="co">#&gt; 2    b25</span></span>
+<span><span class="co">#&gt; 3    b36</span></span>
+<span><span class="co">#&gt; 4    b25</span></span>
+<span><span class="co">#&gt; 5    b25</span></span>
+<span><span class="co">#&gt; 6    b25</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                            ref</span></span>
 <span><span class="co">#&gt; 1 Kok BE, Coffey KA, Cohn MA, Catalino LI, Vacharkulksemsuk T, Algoe SB, Brantley M, Fredrickson BL (2013). “How positive emotions build physical health: Perceived positive social connections account for the upward spiral between positive emotions and vagal tone.” _Psychological Science_, *24*(7), 1123-1132. doi:10.1177/0956797612470827 &lt;https://doi.org/10.1177/0956797612470827&gt;.</span></span>
 <span><span class="co">#&gt; 2                                                                                                                                                                                                      Horvath S (2013). “DNA methylation age of human tissues and cell types.” _Genome Biology_, *14*(10), R115. doi:10.1186/gb-2013-14-10-r115 &lt;https://doi.org/10.1186/gb-2013-14-10-r115&gt;.</span></span>
@@ -892,6 +913,34 @@ database cited, one with a retraction and two with corrections.</p>
 <span><span class="co">#&gt; 4                                                                                                                                                                                                          Horvath S (2013). “DNA methylation age of human tissues and cell types.” _Genome Biology_, *14*, 3156. doi:10.1186/gb-2013-14-10-r115 &lt;https://doi.org/10.1186/gb-2013-14-10-r115&gt;.</span></span>
 <span><span class="co">#&gt; 5                                                                                                                                                                                                          Horvath S (2013). “DNA methylation age of human tissues and cell types.” _Genome Biology_, *14*, 3156. doi:10.1186/gb-2013-14-10-r115 &lt;https://doi.org/10.1186/gb-2013-14-10-r115&gt;.</span></span>
 <span><span class="co">#&gt; 6                                                                                                                                                                                                          Horvath S (2013). “DNA methylation age of human tissues and cell types.” _Genome Biology_, *14*, 3156. doi:10.1186/gb-2013-14-10-r115 &lt;https://doi.org/10.1186/gb-2013-14-10-r115&gt;.</span></span>
+<span><span class="co">#&gt;                          doi bibtype</span></span>
+<span><span class="co">#&gt; 1   10.1177/0956797612470827 Article</span></span>
+<span><span class="co">#&gt; 2 10.1186/gb-2013-14-10-r115 Article</span></span>
+<span><span class="co">#&gt; 3 10.1038/s41562-023-01749-9    Misc</span></span>
+<span><span class="co">#&gt; 4 10.1186/gb-2013-14-10-r115 Article</span></span>
+<span><span class="co">#&gt; 5 10.1186/gb-2013-14-10-r115 Article</span></span>
+<span><span class="co">#&gt; 6 10.1186/gb-2013-14-10-r115 Article</span></span>
+<span><span class="co">#&gt;                                                                                                                                                       title</span></span>
+<span><span class="co">#&gt; 1 How positive emotions build physical health: Perceived positive social connections account for the upward spiral between positive emotions and vagal tone</span></span>
+<span><span class="co">#&gt; 2                                                                                                       DNA methylation age of human tissues and cell types</span></span>
+<span><span class="co">#&gt; 3                                                                                                                                                      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4                                                                                                       DNA methylation age of human tissues and cell types</span></span>
+<span><span class="co">#&gt; 5                                                                                                       DNA methylation age of human tissues and cell types</span></span>
+<span><span class="co">#&gt; 6                                                                                                       DNA methylation age of human tissues and cell types</span></span>
+<span><span class="co">#&gt;                 journal year</span></span>
+<span><span class="co">#&gt; 1 Psychological Science 2013</span></span>
+<span><span class="co">#&gt; 2        Genome Biology 2013</span></span>
+<span><span class="co">#&gt; 3             Behaviour &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4        Genome Biology 2013</span></span>
+<span><span class="co">#&gt; 5        Genome Biology 2013</span></span>
+<span><span class="co">#&gt; 6        Genome Biology 2013</span></span>
+<span><span class="co">#&gt;                                                                                                   authors</span></span>
+<span><span class="co">#&gt; 1 B E Kok, K A Coffey, M A Cohn, L I Catalino, T Vacharkulksemsuk, S B Algoe, M Brantley, B L Fredrickson</span></span>
+<span><span class="co">#&gt; 2                                                                                               S Horvath</span></span>
+<span><span class="co">#&gt; 3                                                                                                      NA</span></span>
+<span><span class="co">#&gt; 4                                                                                               S Horvath</span></span>
+<span><span class="co">#&gt; 5                                                                                               S Horvath</span></span>
+<span><span class="co">#&gt; 6                                                                                               S Horvath</span></span>
 <span><span class="co">#&gt;                  id retractionwatch</span></span>
 <span><span class="co">#&gt; 1 09567976221150616      Correction</span></span>
 <span><span class="co">#&gt; 2 09567976231194221      Correction</span></span>
